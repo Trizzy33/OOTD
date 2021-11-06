@@ -26,3 +26,24 @@ def product():
     print(year, product_name)
     return render_template("index.html", title="product")
 
+@main.route('/search_product', methods=["GET", "POST"])
+def search_product():
+    search_product_form = request.form
+    product_name = search_product_form["product-name"]
+    print(product_name)
+    return render_template("index.html", title="search_product")
+
+@main.route('/update_username', methods=["GET", "POST"])
+def update_username():
+    update_username_form = request.form
+    ori_name = update_username_form["ori-name"]
+    new_name = update_username_form["new-name"]
+    print(ori_name,new_name)
+    return render_template("index.html", title="update_username")
+
+@main.route('/delete_outfit', methods=["GET","POST"])
+def delete_outfit():
+    delete_outfit_form = request.form
+    outfit_id = delete_outfit_form["outfit-id"]
+    print(outfit_id)
+    return render_template("index.html", title="delete_outfit")
