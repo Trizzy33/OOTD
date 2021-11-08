@@ -6,7 +6,7 @@ from OOTD.settings import db
 def product_search(product_name: str):
     conn = db.connect()
     query = "select id from product where name = '{}';".format(product_name)
-    result = conn.execute(query).fetchall
+    result = conn.execute(query)
     conn.close()
     id = result.first()[0]
     print(id)

@@ -1,5 +1,4 @@
 from flask import Blueprint, redirect, request, render_template
-from OOTD.settings import *
 from OOTD.views.database import *
 main = Blueprint("main", __name__)
 
