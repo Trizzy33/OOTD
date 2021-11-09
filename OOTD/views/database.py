@@ -117,3 +117,5 @@ def adv2():
     conn.close()
     for row in result:
         print(row)
+    return result
+

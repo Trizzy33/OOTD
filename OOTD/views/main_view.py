@@ -24,8 +24,8 @@ def product():
     product_form = request.form
     year = product_form["year"]
     product_name = product_form["product-name"]
-    product_url = product_form["product-url"]
-    print(year, product_name, product_url)
+    #product_url = product_form["product-url"]
+    print(year, product_name)
     return render_template("index.html", title="product")
 
 
@@ -34,8 +34,8 @@ def search_product():
     search_product_form = request.form
     product_name = search_product_form["product-name"]
     print(product_name)
-    product_search(product_name)
-    return render_template("index.html", title="search_product")
+    results = product_search(product_name)
+    return render_template("index.html", title="search_product", results = results)
 
 
 @main.route('/update_username', methods=["GET", "POST"])
@@ -53,3 +53,13 @@ def delete_outfit():
     outfit_id = delete_outfit_form["outfit-id"]
     print(outfit_id)
     return render_template("index.html", title="delete_outfit")
+
+@main.route('/list_adv1', methods=["GET", "POST"])
+def list_adv1():
+    results = adv1()
+    return render_template("index.html", title="adv1", results = results)
+
+@main.route('/list_adv2', methods=["GET", "POST"])
+def list_adv2():
+    results = adv2()
+    return render_template("index.html", title="adv2", results = results)
