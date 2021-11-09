@@ -99,8 +99,6 @@ def adv1():
             'ORDER BY b.cnt DESC LIMIT 15;'
     result = conn.execute(query)
     conn.close()
-    for row in result:
-        print(row)
     return result
 
 
@@ -115,7 +113,5 @@ def adv2():
             "ON author_id = user_id WHERE u.gender = 'MALE' ORDER BY u.user_id)".format('tutu', 'disney')
     result = conn.execute(query)
     conn.close()
-    for row in result:
-        print(row)
     return result
 
