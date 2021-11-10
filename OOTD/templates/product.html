@@ -1,0 +1,21 @@
+{% block product_form %}
+    <h2>Product</h2>
+    <form action="/product" id="product-form" method="post">
+        <label for="year">Year</label>
+        <input id="year" type="number" name="year"></input>
+        <br>
+
+        <label for="name">Product Name</label>
+        <input id="product-name" type="text" name="product-name"></input>
+        <br>
+
+        <label for="category-id">Category Id</label>
+        <input id="category-id" type="number" name="category-id"></input>
+        <br>
+        
+        <label for="product-url">Product Image Url</label>
+        <input type="text" name="product-url"></input>
+        <br>
+        <input type="submit" name="submit" value="submit"></input>
+    </form>
+{% endblock %}

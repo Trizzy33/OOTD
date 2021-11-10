@@ -30,20 +30,7 @@
             <input type="submit" name="submit" value="submit"></input>
         </form>
 
-        <h2>Product</h2>
-        <form action="/product" id="product-form" method="post">
-            <label for="year">Year</label>
-            <input id="year" type="number" name="year"></input>
-            <br>
-            <label for="name">Product Name</label>
-            <input id="product-name" type="text" name="product-name"></input>
-            <br>
-            <label for="product-image">Product Image Url</label>
-            <input type="text" name="product-image"></input>
-            <br>
-            <input type="submit" name="submit" value="submit"></input>
-        </form>
-
+        {% include 'product.html' %}
 
         <h1>Search</h1>
         <h2>Product</h2>
@@ -90,10 +77,9 @@
         {% if results %} 
         <h1>Results</h1>
             {% for i in results: %}
-            <li>-: {{ i }}</li>
+                <li>-: {{ i }}</li>
             {% endfor %}
         {% endif %}
-
 
     </body>
 </html>
