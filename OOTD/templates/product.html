@@ -18,4 +18,12 @@
         <br>
         <input type="submit" name="submit" value="submit"></input>
     </form>
+
+    {% if add_product_result %}
+        {% if add_product_result == "success" %}
+            Success
+        {% else %}
+            Failure
+        {% endif %}
+    {% endif %}
 {% endblock %}

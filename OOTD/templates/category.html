@@ -1,0 +1,29 @@
+{% block category_form %}
+    <h2>Category</h2>
+    <form action="/category" id="category-form" method="post">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" form="category-form">
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+        </select>
+        <br>
+        <label for="master-category">Master Category</label>
+        <input type="text" name="master-category"></input>
+        <br>
+        <label for="sub-category">Sub Category</label>
+        <input type="text" name="sub-category"></input>
+        <br>
+        <label for="article-style">Article Style</label>
+        <input type="text" name="article-style"></input>
+        <br>
+        <input type="submit" name="submit" value="submit"></input>
+    </form>
+
+    {% if add_category_result %}
+        {% if add_category_result == "success" %}
+            Success
+        {% else %}
+            Failure
+        {% endif %}
+    {% endif %}
+{% endblock %}

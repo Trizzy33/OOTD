@@ -3,7 +3,7 @@ from OOTD.settings import db
 
 
 # search product, return id
-def product_search(product_name: str):
+def find_product(product_name: str):
     conn = db.connect()
     query = "select * from product where name like '%%{}%%';".format(product_name)
     result = conn.execute(query)
@@ -11,6 +11,13 @@ def product_search(product_name: str):
     # result is a cursor result object
     return result
 
+# search username
+def find_user(username: str):
+    conn = db.connect()
+    query = "select * from user where name like '%%{}%%';".format(username)
+    result = conn.execute(query)
+    conn.close()
+    return result
 
 # add category
 def add_category(gender: str, master_cate: str, sub_cate: str, article: str):
@@ -20,23 +27,28 @@ def add_category(gender: str, master_cate: str, sub_cate: str, article: str):
     conn.execute(query)
     conn.close()
 
-
 # add product
 def add_product(year, cate_id, product_name, product_url):
     conn = db.connect()
-    query = 'insert into product(year, category_id, name, url) values("{}","{}","{}","{}");'.format(
-        year, cate_id, product_name, product_url
+    query = 'insert into product(id, year, category_id, name, url) values("{}", "{}","{}","{}","{}");'.format(
+        60001, year, cate_id, product_name, product_url
     )
     conn.execute(query)
 
-
 # update user name
-def add_uname(old_name, new_name):
+def update_uname(old_name, new_name):
     conn = db.connect()
     query = 'update user set name = "{}" where name = "{}";'.format(new_name, old_name)
     conn.execute(query)
     conn.close()
 
+# get all outfits
+def get_outfits():
+    conn = db.connect()
+    query = "select * from outfits"
+    result = conn.execute(query)
+    conn.close()
+    return result
 
 # delete outfit
 def del_outfit(outfit_id):
