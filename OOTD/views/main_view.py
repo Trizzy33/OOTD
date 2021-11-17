@@ -113,14 +113,14 @@ def root():
 # login
 @main.route('/login', methods=["GET", "POST"])
 def login():
-    error = ' login success'
+    error = False
     email = request.form["input_email"]
     password = request.form["input_password"]
     if is_valid(email, password):
         session['email'] = email
         # return redirect(url_for('root'))
     else:
-        error = 'Invalid UserId / Password'
+        error = True
     return render_template('index.html', error=error)
 
 
@@ -128,7 +128,8 @@ def login():
 @main.route('/logout')
 def logout():
     session.pop('email', None)
-    return redirect(url_for('root'))
+    # return redirect(url_for('root'))
+    return render_template("index.html", logout=True)
 
 
 # login form

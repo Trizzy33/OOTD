@@ -114,5 +114,13 @@
             Login successful!
         {% endif %}
 
+        <h1>Logout</h1>
+        <form action="/logout" id="log_out" method="get">
+            <input type="submit" name="submit" value="logout"></input>
+        </form>
+        {% if logout %}
+            Log Out Successful!
+        {% endif %}
+
     </body>
 </html>
