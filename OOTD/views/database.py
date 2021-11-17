@@ -127,3 +127,13 @@ def adv2():
     conn.close()
     return result
 
+
+# return true if email and password are correct
+def is_valid(email, password):
+    conn = db.connect()
+    query = 'SELECT email, password FROM user'
+    result = conn.execute(query)
+    for row in result:
+        if row[0] == email and row[1] == password:
+            return True
+    return False

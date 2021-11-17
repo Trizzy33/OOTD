@@ -1,10 +1,13 @@
-from flask import Blueprint, redirect, request, render_template
+from flask import *
 from OOTD.views.database import *
+
 main = Blueprint("main", __name__)
+
 
 @main.route('/')
 def home():
     return render_template('index.html', title="template")
+
 
 @main.route("/category", methods=["POST"])
 def category():
@@ -19,8 +22,9 @@ def category():
     except Exception as err:
         print(err)
         return render_template("index.html", add_category_result="failure")
-    
+
     return render_template("index.html", add_category_result="success")
+
 
 @main.route('/product', methods=["POST"])
 def product():
@@ -35,7 +39,7 @@ def product():
     except Exception as err:
         print(err)
         return render_template("index.html", add_product_result="failure")
-    
+
     return render_template("index.html", add_product_result="success")
 
 
@@ -45,20 +49,23 @@ def search_product():
     product_name = search_product_form["product-name"]
     print(product_name)
     results = find_product(product_name)
-    return render_template("index.html", title="search_product", results = results)
+    return render_template("index.html", title="search_product", results=results)
+
 
 @main.route("/search_username", methods=["POST"])
 def search_username():
     search_username_form = request.form
     username = search_username_form["username"]
     results = find_user(username)
-    return render_template("index.html", title="search_username", results = results)
+    return render_template("index.html", title="search_username", results=results)
+
 
 @main.route("/list_outfits", methods=["POST"])
 def list_outfits():
     outfits_form = request.form
     results = get_outfits()
     return render_template("index.html", results=results)
+
 
 @main.route('/update_username', methods=["POST"])
 def update_username():
@@ -72,6 +79,7 @@ def update_username():
         return render_template("index.html", update_username_result="failure")
     return render_template("index.html", update_username_result="success")
 
+
 @main.route('/delete_outfit', methods=["POST"])
 def delete_outfit():
     delete_outfit_form = request.form
@@ -83,12 +91,49 @@ def delete_outfit():
         return render_template("index.html", del_outfit_result="failure")
     return render_template("index.html", delete_outfit_result="success")
 
+
 @main.route('/list_adv1', methods=["GET", "POST"])
 def list_adv1():
     results = adv1()
-    return render_template("index.html", title="adv1", results = results)
+    return render_template("index.html", title="adv1", results=results)
+
 
 @main.route('/list_adv2', methods=["GET", "POST"])
 def list_adv2():
     results = adv2()
-    return render_template("index.html", title="adv2", results = results)
+    return render_template("index.html", title="adv2", results=results)
+
+
+# root page, route should be '/'
+@main.route('/root')
+def root():
+    render_template('index.html')
+
+
+# login
+@main.route('/login', methods=["GET", "POST"])
+def login():
+    email = request.form['inputEmail']
+    password = request.form['inputPassword']
+    if is_valid(email, password):
+        session['email'] = email
+        return redirect(url_for('root'))
+    else:
+        error = 'Invalid UserId / Password'
+    return render_template('login.html', error=error)
+
+
+# logout
+@main.route('/logout')
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('root'))
+
+
+# login form
+@main.route('/login_form')
+def login_form():
+    if 'email' in session:
+        return redirect(url_for('root'))
+    else:
+        return render_template('login.html', error='')
