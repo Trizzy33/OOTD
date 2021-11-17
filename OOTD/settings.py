@@ -3,6 +3,7 @@ import sqlalchemy
 
 
 app = Flask(__name__, instance_relative_config=True)
+app.secret_key = 'cs411'
 
 
 # init MySQL

@@ -97,5 +97,22 @@
             {% endfor %}
         {% endif %}
 
+        <h1>Login</h1>
+        <h2>User Info</h2>
+        <form action="/login" id="login_info" method="post">
+            <label>Email</label>
+            <input id="input_email" type="email" name="input_email"></input>
+            <br>
+            <label>Password</label>
+            <input id="input_password" type="text" name="input_password"></input>
+            <br>
+            <input type="submit" name="submit" value="login"></input>
+        </form>
+        {% if error == "Invalid UserId / Password" %}
+            InValid UserId/Password!
+        {% else %}
+            Login successful!
+        {% endif %}
+
     </body>
 </html>
