@@ -110,18 +110,34 @@ def root():
     render_template('index.html')
 
 
+# register
+@main.route('/register', methods=["POST"])
+def register():
+    user_info = request.form
+    email = user_info["register_email"]
+    password = user_info["register_password"]
+    gender = user_info["register_gender"]
+    name = user_info["register_name"]
+    dob = user_info["register_dob"]
+    try:
+        add_user(email, gender, password, name, dob)
+    except Exception as err:
+        print(err)
+        return render_template("index.html", register_failed=True)
+    return render_template("index.html", register_success=True)
+
+
 # login
 @main.route('/login', methods=["GET", "POST"])
 def login():
-    error = False
     email = request.form["input_email"]
     password = request.form["input_password"]
     if is_valid(email, password):
         session['email'] = email
         # return redirect(url_for('root'))
+        return render_template('index.html', login_success=True)
     else:
-        error = True
-    return render_template('index.html', error=error)
+        return render_template('index.html', login_failed=True)
 
 
 # logout
@@ -138,4 +154,4 @@ def login_form():
     if 'email' in session:
         return redirect(url_for('root'))
     else:
-        return render_template('login.html', error='')
+        return render_template('login.html', error=True)

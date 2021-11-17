@@ -11,6 +11,7 @@ def find_product(product_name: str):
     # result is a cursor result object
     return result
 
+
 # search username
 def find_user(username: str):
     conn = db.connect()
@@ -18,6 +19,7 @@ def find_user(username: str):
     result = conn.execute(query)
     conn.close()
     return result
+
 
 # add category
 def add_category(gender: str, master_cate: str, sub_cate: str, article: str):
@@ -27,6 +29,7 @@ def add_category(gender: str, master_cate: str, sub_cate: str, article: str):
     conn.execute(query)
     conn.close()
 
+
 # add product
 def add_product(year, cate_id, product_name, product_url):
     conn = db.connect()
@@ -35,12 +38,14 @@ def add_product(year, cate_id, product_name, product_url):
     )
     conn.execute(query)
 
+
 # update user name
 def update_uname(old_name, new_name):
     conn = db.connect()
     query = 'update user set name = "{}" where name = "{}";'.format(new_name, old_name)
     conn.execute(query)
     conn.close()
+
 
 # get all outfits
 def get_outfits():
@@ -49,6 +54,7 @@ def get_outfits():
     result = conn.execute(query)
     conn.close()
     return result
+
 
 # delete outfit
 def del_outfit(outfit_id):
@@ -137,3 +143,13 @@ def is_valid(email, password):
         if row[0] == email and row[1] == password:
             return True
     return False
+
+
+def add_user(email, gender, password, name, dob):
+    conn = db.connect()
+    query = 'INSERT INTO user(name, gender, dob, email, password) VALUES ("{}","{}","{}","{}","{}") ;'.format(
+        name, gender, dob, email, password
+    )
+    conn.execute(query)
+    conn.close()
+

@@ -9,24 +9,49 @@
     </head>
 
     <body>
-        <h1 style="color:blue;text-align:center"> Team Potato Midterm Demo </h1>
-        <h1>Adding</h1>
-        {% include "category.html" %}
-        {% include "product.html" %}
+        <h1 style="color:blue;text-align:center"> Team Potato Index Demo </h1>
+
+        <h1>Register</h1>
+        <h2>User Info</h2>
+        <form action="/register" id="register_info" method="post">
+            <label>Email</label>
+            <input id="register_email" type="email" name="register_email"></input>
+            <br>
+            <label>Password</label>
+            <input id="register_password" type="text" name="register_password"></input>
+            <br>
+            <label>Name</label>
+            <input id="register_name" type="text" name="register_name"></input>
+            <br>
+            <label>Gender</label>
+            <select id="register_gender" name="register_gender">
+                <option value="FEMALE">Female</option>
+                <option value="MALE">Male</option>
+            </select>
+            <br>
+            <label>Date of Birth</label>
+            <input id="register_dob" type="text" name="register_dob"></input>
+            <br>
+            <input type="submit" name="submit" value="Register"></input>
+        {% if register_success %}
+            Register successful!
+        {% endif %}
+        {% if register_failed %}
+            Register failed!
+        {% endif %}
+        </form>
 
         <h1 >Updating </h1>
         <h2>User Name</h2>
         <form action="/update_username" id="update-username" method="post">
-            <label for="name">Original Username</label>
+            <label>Original Username</label>
             <input id="ori-name" type="text" name="ori-name"></input>
             <br>
-            <label for="name">New Username</label>
+            <label>New Username</label>
             <input id="new-name", input type="text" name="new-name"></input>
             <br>
             <input type="submit" name="submit" value="update"></input>
-            
             <br>
-
             {% if update_username_result %}
                 {% if update_username_result == "success" %}
                     Success
@@ -35,67 +60,6 @@
                 {% endif %}
             {% endif %}
         </form>
-
-        <h1>Search</h1>
-        <h2>Product</h2>
-        <form action="/search_product" id="search-product-form" method="post">
-            <label for="name">Product Name</label>
-            <input id="product-name" type="text" name="product-name"></input>
-            <br>
-            <input type="submit" name="submit" value="search"></input>
-        </form>
-
-        <form action="/search_username" method="post">
-            <label for="username">User Name</label>
-            <input id="username" type="text" name="username"></input>
-            <br>
-            <input type="submit" name="submit" value="search"></input>
-        </form>
-
-        <form action="/list_outfits" method="post">
-            <label for="outfits">Outfits</label>
-            <input type="submit" name="get" value="get"></input>
-
-            <br>
-
-            {% if del_outfit_result %}
-                {% if del_outfit_result == "success" %}
-                    Success
-                {% else %}
-                    Failure
-                {% endif %}
-            {% endif %}
-        </form>
-
-        <h1>Delete</h1>
-        <h2>Outfit</h2>
-        <form action="/delete_outfit" id="delete_outfit" method="post">
-            <label for="name">Outfit ID</label>
-            <input id="outfit-id" type="text" name="outfit-id"></input>
-            <br>
-            <input type="submit" name="submit" value="Delete"></input>
-        </form>
-        
-        <h1>Advanced Querys</h1>
-        <h2>Advance Query1：Ranking of users who post the most blogs</h2>
-        <form action="/list_adv1" id="list_adv1" method="post">
-            <input type="submit" name="submit" value="List"></input>
-        </form>
-
-        <h2>Advance Query2：Show the name, email and blog of male users who buy tutu and users who mentioned Disney in their blog</h2>
-        <form action="/list_adv2" id="list_adv2" method="post">
-            <input type="submit" name="submit" value="List"></input>
-        </form>
-
-
-        {% if results %} 
-        <h1>Results</h1>
-            {% for itr in results: %}
-                {% if loop.index <= 25 %}
-                    <li>-: {{ itr }}</li>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
 
         <h1>Login</h1>
         <h2>User Info</h2>
@@ -107,20 +71,23 @@
             <input id="input_password" type="text" name="input_password"></input>
             <br>
             <input type="submit" name="submit" value="login"></input>
-        </form>
-        {% if error == "Invalid UserId / Password" %}
-            InValid UserId/Password!
-        {% else %}
+
+        {% if login_success %}
             Login successful!
         {% endif %}
+        {% if login_failed %}
+            InValid UserId/Password!
+        {% endif %}
+        </form>
 
         <h1>Logout</h1>
         <form action="/logout" id="log_out" method="get">
             <input type="submit" name="submit" value="logout"></input>
-        </form>
+
         {% if logout %}
             Log Out Successful!
         {% endif %}
+        </form>
 
     </body>
 </html>
