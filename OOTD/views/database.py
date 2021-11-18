@@ -145,6 +145,7 @@ def is_valid(email, password):
     return False
 
 
+# add user to database
 def add_user(email, gender, password, name, dob):
     conn = db.connect()
     query = 'INSERT INTO user(name, gender, dob, email, password) VALUES ("{}","{}","{}","{}","{}") ;'.format(
@@ -152,4 +153,6 @@ def add_user(email, gender, password, name, dob):
     )
     conn.execute(query)
     conn.close()
+
+
 

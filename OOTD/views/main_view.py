@@ -1,5 +1,7 @@
 from flask import *
+from flask_login import  current_user, login_user, login_required, logout_user
 from OOTD.views.database import *
+from OOTD.templates import *
 
 main = Blueprint("main", __name__)
 
@@ -16,7 +18,6 @@ def category():
     master_category = category_form["master-category"]
     subcategory = category_form["sub-category"]
     article_style = category_form["article-style"]
-
     try:
         add_category(gender, master_category, subcategory, article_style)
     except Exception as err:
@@ -109,45 +110,6 @@ def list_adv2():
 def root():
     render_template('index.html')
 
-
-# register
-@main.route('/register', methods=["POST"])
-def register():
-    user_info = request.form
-    email = user_info["register_email"]
-    password = user_info["register_password"]
-    gender = user_info["register_gender"]
-    name = user_info["register_name"]
-    dob = user_info["register_dob"]
-    try:
-        add_user(email, gender, password, name, dob)
-    except Exception as err:
-        print(err)
-        return render_template("index.html", register_failed=True)
-    return render_template("index.html", register_success=True)
-
-
-# login
-@main.route('/login', methods=["GET", "POST"])
-def login():
-    email = request.form["input_email"]
-    password = request.form["input_password"]
-    if is_valid(email, password):
-        session['email'] = email
-        # return redirect(url_for('root'))
-        return render_template('index.html', login_success=True)
-    else:
-        return render_template('index.html', login_failed=True)
-
-
-# logout
-@main.route('/logout')
-def logout():
-    session.pop('email', None)
-    # return redirect(url_for('root'))
-    return render_template("index.html", logout=True)
-
-
 # login form
 @main.route('/login_form')
 def login_form():
@@ -155,3 +117,4 @@ def login_form():
         return redirect(url_for('root'))
     else:
         return render_template('login.html', error=True)
+
