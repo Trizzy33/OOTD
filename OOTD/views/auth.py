@@ -39,7 +39,6 @@ def login():
 @auth.route('/logout')
 def logout():
     session.pop('email', None)
-    # return redirect(url_for('root'))
     return render_template("index.html", logout=True)
 
 
