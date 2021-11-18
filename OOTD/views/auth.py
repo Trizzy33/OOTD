@@ -1,12 +1,8 @@
-from flask import Blueprint, redirect, request, session, render_template
+from flask import Blueprint, redirect, request, session, render_template, url_for
 from OOTD.views.database import *
 
+
 auth = Blueprint('auth', __name__)
-
-
-@auth.route('/')
-def page():
-    return "<h1>Authentication</h1>"
 
 
 # register
@@ -33,10 +29,10 @@ def login():
     password = request.form["input_password"]
     if is_valid(email, password):
         session['email'] = email
-        # return redirect(url_for('root'))
-        return render_template('index.html', login_success=True)
+        session['user_name'] = find_user(email)
+        return redirect(url_for('auth.home'))
     else:
-        return render_template('index.html', login_failed=True)
+        return render_template('login.html', login_failed=True)
 
 
 # logout
@@ -45,3 +41,24 @@ def logout():
     session.pop('email', None)
     # return redirect(url_for('root'))
     return render_template("index.html", logout=True)
+
+
+@auth.route('/update_username', methods=["POST"])
+def update_username():
+    update_username_form = request.form
+    ori_name = update_username_form["ori-name"]
+    new_name = update_username_form["new-name"]
+    try:
+        update_uname(ori_name, new_name)
+    except Exception as err:
+        print(err)
+        return render_template("home.html", update_username_result="failure")
+    return render_template("home.html", update_username_result="success")
+
+
+@auth.route('/home')
+def home():
+    if 'email' in session:
+        return render_template('home.html', user_email=session['email'], user_name=session["user_name"])
+    else:
+        return redirect(url_for('/login'))

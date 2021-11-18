@@ -68,19 +68,6 @@ def list_outfits():
     return render_template("index.html", results=results)
 
 
-@main.route('/update_username', methods=["POST"])
-def update_username():
-    update_username_form = request.form
-    ori_name = update_username_form["ori-name"]
-    new_name = update_username_form["new-name"]
-    try:
-        update_uname(ori_name, new_name)
-    except Exception as err:
-        print(err)
-        return render_template("index.html", update_username_result="failure")
-    return render_template("index.html", update_username_result="success")
-
-
 @main.route('/delete_outfit', methods=["POST"])
 def delete_outfit():
     delete_outfit_form = request.form

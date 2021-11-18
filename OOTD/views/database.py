@@ -13,12 +13,14 @@ def find_product(product_name: str):
 
 
 # search username
-def find_user(username: str):
+def find_user(user_email: str):
     conn = db.connect()
-    query = "select * from user where name like '%%{}%%';".format(username)
+    query = 'select name from user where email = "{}";'.format(user_email)
     result = conn.execute(query)
+    user_name = result.first()[0]
     conn.close()
-    return result
+    print(user_name)
+    return user_name
 
 
 # add category
@@ -137,12 +139,12 @@ def adv2():
 # return true if email and password are correct
 def is_valid(email, password):
     conn = db.connect()
-    query = 'SELECT email, password FROM user'
+    query = 'SELECT COUNT(*) FROM user WHERE email = "{}" AND password = "{}";'.format(email, password)
     result = conn.execute(query)
-    for row in result:
-        if row[0] == email and row[1] == password:
-            return True
-    return False
+    if result.first()[0]:
+        return True
+    else:
+        return False
 
 
 # add user to database

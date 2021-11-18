@@ -18,5 +18,11 @@
             <br>
             <input type="submit" name="submit" value="login"></input>
         </form>
+        {% if login_success %}
+            Login successful!
+        {% endif %}
+        {% if login_failed %}
+            InValid UserId/Password!
+        {% endif %}
 </body>
 </html>
