@@ -9,19 +9,28 @@
     <h2>User_email: {{user_email}}</h2>
     <h2>User_name: {{user_name}}</h2>
 
+    <h1>Logout</h1>
+        <form action="/logout" id="log_out" method="get">
+            <input type="submit" name="submit" value="logout"></input>
+
+        {% if logout %}
+            Log Out Successful!
+        {% endif %}
+        </form>
+
     <h1 >Updating </h1>
-        <h2>User Name</h2>
-        <form action="/update_username" id="update-username" method="post">
-            <label>Original Username</label>
-            <input id="ori-name" type="text" name="ori-name"></input>
-            <br>
+        <h2>User Info</h2>
+        <form action="/update_user_info" id="update-user_info" method="post">
             <label>New Username</label>
-            <input id="new-name", input type="text" name="new-name"></input>
+            <input id="new-name" type="text" name="new-name"></input>
+            <br>
+            <label>New Password</label>
+            <input id="new-password", input type="text" name="new-password"></input>
             <br>
             <input type="submit" name="submit" value="update"></input>
             <br>
-            {% if update_username_result %}
-                {% if update_username_result == "success" %}
+            {% if update_user_result %}
+                {% if update_user_result == "success" %}
                     Success
                 {% else %}
                     Failure

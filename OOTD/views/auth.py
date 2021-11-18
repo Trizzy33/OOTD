@@ -43,17 +43,18 @@ def logout():
     return render_template("index.html", logout=True)
 
 
-@auth.route('/update_username', methods=["POST"])
-def update_username():
-    update_username_form = request.form
-    ori_name = update_username_form["ori-name"]
-    new_name = update_username_form["new-name"]
+@auth.route('/update_user_info', methods=["POST"])
+def update_user_info():
+    update_user_form = request.form
+    new_name = update_user_form["new-name"]
+    new_password = update_user_form["new-password"]
+    email = session['email']
     try:
-        update_uname(ori_name, new_name)
+        update_user(new_name, new_password, email)
     except Exception as err:
         print(err)
-        return render_template("home.html", update_username_result="failure")
-    return render_template("home.html", update_username_result="success")
+        return render_template("home.html", update_user_result="failure")
+    return render_template("home.html", update_user_result="success")
 
 
 @auth.route('/home')

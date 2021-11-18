@@ -141,6 +141,7 @@ def is_valid(email, password):
     conn = db.connect()
     query = 'SELECT COUNT(*) FROM user WHERE email = "{}" AND password = "{}";'.format(email, password)
     result = conn.execute(query)
+    conn.close()
     if result.first()[0]:
         return True
     else:
@@ -157,4 +158,20 @@ def add_user(email, gender, password, name, dob):
     conn.close()
 
 
+# update user info
+def update_user(new_name, new_password, email):
+    # id = find_userid(email)
+    conn = db.connect()
+    query = 'UPDATE user SET name = "{}", password = "{}" WHERE email = "{}";'.format(new_name, new_password, email)
+    conn.execute(query)
+    conn.close()
 
+
+# find user id
+def find_userid(email):
+    conn = db.connect()
+    query = 'SELECT user_id FROM user WHERE email = "{}";'.format(email)
+    result = conn.execute(query)
+    conn.close()
+    print(result.first()[0])
+    return result.first()[0]
