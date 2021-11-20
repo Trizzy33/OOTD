@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Project 1 Index</title>
+    </head>
+
+    <body>
+        <h1 style="color:blue;text-align:center"> Team Potato Index Demo </h1>
+
+        <h1>Register</h1>
+        <h2>User Info</h2>
+        <form action="/register" id="register_info" method="post">
+            <label>Email</label>
+            <input id="register_email" type="email" name="register_email"></input>
+            <br>
+            <label>Password</label>
+            <input id="register_password" type="text" name="register_password"></input>
+            <br>
+            <label>Name</label>
+            <input id="register_name" type="text" name="register_name"></input>
+            <br>
+            <label>Gender</label>
+            <select id="register_gender" name="register_gender">
+                <option value="FEMALE">Female</option>
+                <option value="MALE">Male</option>
+            </select>
+            <br>
+            <label>Date of Birth</label>
+            <input id="register_dob" type="text" name="register_dob"></input>
+            <br>
+            <input type="submit" name="submit" value="Register"></input>
+        {% if register_success %}
+            Register successful!
+        {% endif %}
+        {% if register_failed %}
+            Register failed!
+        {% endif %}
+        </form>
+
+        <h1>Login</h1>
+        <h2>User Info</h2>
+        <form action="/login" id="login_info" method="post">
+            <label>Email</label>
+            <input id="input_email" type="email" name="input_email"></input>
+            <br>
+            <label>Password</label>
+            <input id="input_password" type="text" name="input_password"></input>
+            <br>
+            <input type="submit" name="submit" value="login"></input>
+
+        {% if login_success %}
+            Login successful!
+        {% endif %}
+        {% if login_failed %}
+            InValid UserId/Password!
+        {% endif %}
+        </form>
+
+    </body>
+</html>

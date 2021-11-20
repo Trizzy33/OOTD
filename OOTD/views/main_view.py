@@ -22,9 +22,9 @@ def category():
         add_category(gender, master_category, subcategory, article_style)
     except Exception as err:
         print(err)
-        return render_template("index.html", add_category_result="failure")
+        return render_template("index1.html", add_category_result="failure")
 
-    return render_template("index.html", add_category_result="success")
+    return render_template("index1.html", add_category_result="success")
 
 
 @main.route('/product', methods=["POST"])
@@ -39,9 +39,9 @@ def product():
         add_product(year, category_id, product_name, product_url)
     except Exception as err:
         print(err)
-        return render_template("index.html", add_product_result="failure")
+        return render_template("index1.html", add_product_result="failure")
 
-    return render_template("index.html", add_product_result="success")
+    return render_template("index1.html", add_product_result="success")
 
 
 @main.route('/search_product', methods=["GET", "POST"])
@@ -50,7 +50,7 @@ def search_product():
     product_name = search_product_form["product-name"]
     print(product_name)
     results = find_product(product_name)
-    return render_template("index.html", title="search_product", results=results)
+    return render_template("index1.html", title="search_product", results=results)
 
 
 @main.route("/search_username", methods=["POST"])
@@ -58,14 +58,14 @@ def search_username():
     search_username_form = request.form
     username = search_username_form["username"]
     results = find_user(username)
-    return render_template("index.html", title="search_username", results=results)
+    return render_template("index1.html", title="search_username", results=results)
 
 
 @main.route("/list_outfits", methods=["POST"])
 def list_outfits():
     outfits_form = request.form
     results = get_outfits()
-    return render_template("index.html", results=results)
+    return render_template("index1.html", results=results)
 
 
 @main.route('/delete_outfit', methods=["POST"])
@@ -76,32 +76,32 @@ def delete_outfit():
     try:
         del_outfit(outfit_id)
     except:
-        return render_template("index.html", del_outfit_result="failure")
-    return render_template("index.html", delete_outfit_result="success")
+        return render_template("index1.html", del_outfit_result="failure")
+    return render_template("index1.html", delete_outfit_result="success")
 
 
 @main.route('/list_adv1', methods=["GET", "POST"])
 def list_adv1():
     results = adv1()
-    return render_template("index.html", title="adv1", results=results)
+    return render_template("index1.html", title="adv1", results=results)
 
 
 @main.route('/list_adv2', methods=["GET", "POST"])
 def list_adv2():
     results = adv2()
-    return render_template("index.html", title="adv2", results=results)
+    return render_template("index1.html", title="adv2", results=results)
 
 
 # root page, route should be '/'
 @main.route('/root')
 def root():
-    render_template('index.html')
+    render_template('index1.html')
 
 # login form
-@main.route('/login_form')
-def login_form():
-    if 'email' in session:
-        return redirect(url_for('root'))
-    else:
-        return render_template('login.html', error=True)
+# @main.route('/login_form')
+# def login_form():
+#     if 'email' in session:
+#         return redirect(url_for('root'))
+#     else:
+#         return render_template('login.html', error=True)
 
