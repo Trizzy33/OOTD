@@ -8,7 +8,7 @@ main = Blueprint("main", __name__)
 
 @main.route('/')
 def home():
-    return render_template('index.html', title="template")
+    return render_template('index.html', loggedIn=False)
 
 
 @main.route("/category", methods=["POST"])

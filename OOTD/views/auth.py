@@ -26,9 +26,9 @@ def register():
         add_user(email, gender, password, name, dob)
     except Exception as err:
         print(err)
-        return render_template("index1.html", register_failed=True)
-    error_msg = 'Error Occurred'
-    return render_template("register.html", error=error_msg)
+        error_msg = 'Error Occurred'
+        return render_template("register.html", error=error_msg)
+    return render_template("login.html", error='')
 
 
 @auth.route("/register_form")
@@ -63,8 +63,8 @@ def login():
 @auth.route('/logout')
 def logout():
     session.pop('email', None)
-    # return redirect(url_for('root'))
-    return render_template("index1.html", logout=True)
+    return redirect(url_for('auth.home'))
+    # return render_template("index1.html", logout=True)
 
 
 @auth.route('/update_user_info', methods=["POST"])
@@ -84,6 +84,6 @@ def update_user_info():
 @auth.route('/home')
 def home():
     if 'email' in session:
-        return render_template('home.html', user_email=session['email'], user_name=session["user_name"])
+        return render_template('index.html', loggedIn=True, user_name=session["user_name"])
     else:
-        return redirect(url_for('/login'))
+        return render_template('index.html', loggedIn=False)
