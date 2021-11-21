@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, request, session, render_template, url_for
+from flask import Blueprint, redirect, request, session, render_template, url_for, flash
 from OOTD.views.database import *
 
 
@@ -87,3 +87,31 @@ def home():
         return render_template('index.html', loggedIn=True, user_name=session["user_name"])
     else:
         return render_template('index.html', loggedIn=False)
+
+
+@auth.route("/password")
+def password_form():
+    if 'email' not in session:
+        return redirect(url_for('login_form'))
+    else:
+        return render_template("password.html", msg='')
+
+
+@auth.route("/change_password", methods=['GET', 'POST'])
+def change_password():
+    if 'email' not in session:
+        return redirect(url_for('login_form'))
+    change_password_form = request.form
+    old_password = change_password_form['old_password']
+    new_password = change_password_form['new_password']
+    email = session['email']
+    try:
+        if update_password(old_password, new_password, email):
+            flash("Successfully Changed!")
+            redirect(url_for('auth.home'))
+        else:
+            flash("Failed")
+    except Exception as err:
+        print(err)
+        return render_template("password.html", msg="Error")
+    return render_template("password.html", msg="Wrong password")

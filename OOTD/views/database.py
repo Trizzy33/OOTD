@@ -175,3 +175,25 @@ def find_userid(email):
     conn.close()
     print(result.first()[0])
     return result.first()[0]
+
+
+# update password
+def update_password(old_password, new_password, email):
+    conn = db.connect()
+    query = 'SELECT password FROM user WHERE email = "{}";'.format(email)
+    result = conn.execute(query)
+    user_password = result.first()[0]
+    if old_password == user_password:
+        act = 'UPDATE user SET password = "{}" WHERE email = "{}";'.format(new_password, email)
+        try:
+            conn.execute(act)
+        except Exception as err:
+            print(err)
+        conn.close()
+        return True
+    else:
+        return False
+
+
+
+
