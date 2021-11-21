@@ -159,10 +159,9 @@ def add_user(email, gender, password, name, dob):
 
 
 # update user info
-def update_user(new_name, new_password, email):
-    # id = find_userid(email)
+def update_user(email, name, gender, dob):
     conn = db.connect()
-    query = 'UPDATE user SET name = "{}", password = "{}" WHERE email = "{}";'.format(new_name, new_password, email)
+    query = 'UPDATE user SET name = "{}", gender = "{}", dob = "{}" WHERE email = "{}";'.format(name, gender, dob, email)
     conn.execute(query)
     conn.close()
 
@@ -185,15 +184,20 @@ def update_password(old_password, new_password, email):
     user_password = result.first()[0]
     if old_password == user_password:
         act = 'UPDATE user SET password = "{}" WHERE email = "{}";'.format(new_password, email)
-        try:
-            conn.execute(act)
-        except Exception as err:
-            print(err)
+        conn.execute(act)
         conn.close()
         return True
     else:
         return False
 
 
+# get user info
+def get_user_info(email):
+    conn = db.connect()
+    query = 'SELECT name, gender, dob FROM user WHERE email = "{}";'.format(email)
+    result = conn.execute(query)
+    user_info = result.first()
+    conn.close()
+    return user_info
 
 

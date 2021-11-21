@@ -53,6 +53,7 @@ def login():
     if is_valid(email, password):
         session['email'] = email
         session['user_name'] = find_user(email)
+        flash("Login Successfully")
         return redirect(url_for('auth.home'))
     else:
         error_msg = "Invalid User Name/Password!"
@@ -63,22 +64,22 @@ def login():
 @auth.route('/logout')
 def logout():
     session.pop('email', None)
+    flash("Logout Successfully!")
     return redirect(url_for('auth.home'))
-    # return render_template("index1.html", logout=True)
 
 
-@auth.route('/update_user_info', methods=["POST"])
-def update_user_info():
-    update_user_form = request.form
-    new_name = update_user_form["new-name"]
-    new_password = update_user_form["new-password"]
-    email = session['email']
-    try:
-        update_user(new_name, new_password, email)
-    except Exception as err:
-        print(err)
-        return render_template("home.html", update_user_result="failure")
-    return render_template("home.html", update_user_result="success")
+# @auth.route('/update_user_info', methods=["POST"])
+# def update_user_info():
+#     update_user_form = request.form
+#     new_name = update_user_form["new-name"]
+#     new_password = update_user_form["new-password"]
+#     email = session['email']
+#     try:
+#         update_user(new_name, new_password, email)
+#     except Exception as err:
+#         print(err)
+#         return render_template("home.html", update_user_result="failure")
+#     return render_template("home.html", update_user_result="success")
 
 
 @auth.route('/home')
@@ -105,13 +106,36 @@ def change_password():
     old_password = change_password_form['old_password']
     new_password = change_password_form['new_password']
     email = session['email']
+    if update_password(old_password, new_password, email):
+        flash("Successfully Changed!")
+        return redirect(url_for('auth.home'))
+    else:
+        flash("Failed")
+    return render_template("password.html", msg="Wrong password")
+
+
+# get user profile
+@auth.route("/profile")
+def profile_form():
+    if 'email' not in session:
+        return redirect(url_for('login_form'))
+    else:
+        email = session['email']
+        profile_data = get_user_info(email)
+    return render_template("profile.html", profileData=profile_data, email=email)
+
+
+@auth.route("/edit_profile", methods=['GET', 'POST'])
+def edit_profile():
+    user_profile = request.form
+    email = user_profile['email']
+    name = user_profile['user_name']
+    gender = user_profile['gender']
+    dob = user_profile['user_dob']
     try:
-        if update_password(old_password, new_password, email):
-            flash("Successfully Changed!")
-            redirect(url_for('auth.home'))
-        else:
-            flash("Failed")
+        update_user(email, name, gender, dob)
+        flash("Profile Updated!")
+        return redirect(url_for('auth.home'))
     except Exception as err:
         print(err)
-        return render_template("password.html", msg="Error")
-    return render_template("password.html", msg="Wrong password")
+    return redirect(url_for('auth.profile_form'))
