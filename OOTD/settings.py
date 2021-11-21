@@ -1,6 +1,5 @@
 from flask import Flask
 import sqlalchemy
-# from flask_login import LoginManager
 
 app = Flask(__name__, instance_relative_config=True)
 app.secret_key = 'cs411'
