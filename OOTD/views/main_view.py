@@ -111,3 +111,12 @@ def search_product():
     # except:
     #     return render_template('index1.html')
 
+
+@main.route('/display_category/<int:id>')
+def display_category(id):
+    if id == 1:
+        search = "gender = 'Men'"
+    elif id == 2:
+        search = "gender = 'Women'"
+    item_data = search_product_cate(search)
+    return render_template('display.html', item_data=item_data, exist_item=True)
