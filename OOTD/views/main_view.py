@@ -44,13 +44,13 @@ def product():
     return render_template("index1.html", add_product_result="success")
 
 
-@main.route('/search_product', methods=["GET", "POST"])
-def search_product():
-    search_product_form = request.form
-    product_name = search_product_form["product-name"]
-    print(product_name)
-    results = find_product(product_name)
-    return render_template("index1.html", title="search_product", results=results)
+# @main.route('/search_product', methods=["GET", "POST"])
+# def search_product():
+#     search_product_form = request.form
+#     product_name = search_product_form["product-name"]
+#     print(product_name)
+#     results = find_product(product_name)
+#     return render_template("index1.html", title="search_product", results=results)
 
 
 @main.route("/search_username", methods=["POST"])
@@ -97,11 +97,16 @@ def list_adv2():
 def root():
     render_template('index1.html')
 
-# login form
-# @main.route('/login_form')
-# def login_form():
-#     if 'email' in session:
-#         return redirect(url_for('root'))
-#     else:
-#         return render_template('login.html', error=True)
+
+@main.route('/search', methods=["POST"])
+def search_product():
+    search_product_form = request.form
+    product_name = search_product_form["product_name"]
+    print(product_name)
+    item_data = search_product_name(product_name)
+    # for data in item_data:
+    #     print(data[1])
+    return render_template('display.html',item_data=item_data, exist_item=True)
+    # except:
+    #     return render_template('index1.html')
 

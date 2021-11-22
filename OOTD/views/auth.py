@@ -5,6 +5,14 @@ from OOTD.views.database import *
 auth = Blueprint('auth', __name__)
 
 
+@auth.route('/home')
+def home():
+    if 'email' in session:
+        return render_template('index.html', loggedIn=True, user_name=session["user_name"])
+    else:
+        return render_template('index.html', loggedIn=False)
+
+
 # register
 @auth.route('/register', methods=["POST"])
 def register():
@@ -36,6 +44,7 @@ def register_form():
     return render_template("register.html", error='')
 
 
+# login form
 @auth.route("/login_form")
 def login_form():
     if 'email' in session:
@@ -66,28 +75,6 @@ def logout():
     session.pop('email', None)
     flash("Logout Successfully!")
     return redirect(url_for('auth.home'))
-
-
-# @auth.route('/update_user_info', methods=["POST"])
-# def update_user_info():
-#     update_user_form = request.form
-#     new_name = update_user_form["new-name"]
-#     new_password = update_user_form["new-password"]
-#     email = session['email']
-#     try:
-#         update_user(new_name, new_password, email)
-#     except Exception as err:
-#         print(err)
-#         return render_template("home.html", update_user_result="failure")
-#     return render_template("home.html", update_user_result="success")
-
-
-@auth.route('/home')
-def home():
-    if 'email' in session:
-        return render_template('index.html', loggedIn=True, user_name=session["user_name"])
-    else:
-        return render_template('index.html', loggedIn=False)
 
 
 @auth.route("/password")
@@ -125,6 +112,7 @@ def profile_form():
     return render_template("profile.html", profileData=profile_data, email=email)
 
 
+# update user profile
 @auth.route("/edit_profile", methods=['GET', 'POST'])
 def edit_profile():
     user_profile = request.form

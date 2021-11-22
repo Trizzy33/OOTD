@@ -161,7 +161,8 @@ def add_user(email, gender, password, name, dob):
 # update user info
 def update_user(email, name, gender, dob):
     conn = db.connect()
-    query = 'UPDATE user SET name = "{}", gender = "{}", dob = "{}" WHERE email = "{}";'.format(name, gender, dob, email)
+    query = 'UPDATE user SET name = "{}", gender = "{}", dob = "{}" WHERE email = "{}";'.format(name,
+                                                                                                gender, dob, email)
     conn.execute(query)
     conn.close()
 
@@ -200,4 +201,11 @@ def get_user_info(email):
     conn.close()
     return user_info
 
+
+def search_product_name(product_name):
+    conn = db.connect()
+    query = 'SELECT name, url FROM product WHERE name like "%%{}%%";'.format(product_name)
+    item_data = conn.execute(query)
+    conn.close()
+    return item_data
 
