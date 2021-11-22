@@ -1,6 +1,8 @@
 # database manipulate
-from OOTD.settings import db
+from time import time
 
+from OOTD.settings import db
+import random
 
 # search product, return id
 def find_product(product_name: str):
@@ -204,8 +206,19 @@ def get_user_info(email):
 
 def search_product_name(product_name):
     conn = db.connect()
-    query = 'SELECT name, url FROM product WHERE name like "%%{}%%";'.format(product_name)
+    query = 'SELECT name, url FROM product WHERE name like "%%{}%%" LIMIT 100;'.format(product_name)
     item_data = conn.execute(query)
     conn.close()
     return item_data
+
+
+def get_rand_product():
+    random.seed(time())
+    start_id = random.randrange(0, 4000)
+    conn = db.connect()
+    query = 'SELECT name, url FROM product WHERE id > "{}" AND id < "{}";'.format(start_id, start_id+20)
+    result = conn.execute(query)
+    conn.close()
+    return result
+
 

@@ -8,7 +8,8 @@ main = Blueprint("main", __name__)
 
 @main.route('/')
 def home():
-    return render_template('index.html', loggedIn=False)
+    item_data = get_rand_product()
+    return render_template('index.html', loggedIn=False, item_data=item_data)
 
 
 @main.route("/category", methods=["POST"])

@@ -43,7 +43,7 @@
     <div class="container col-lg-12" style="background-image: url(static/img/banner4.png); top:0px; height: 550px">
         <div class="logotxt">
             <h1 class="text-light" style="text-align:center;vertical-align:middle">
-                <br><br><br><br><span style="font-size:180%;font-weight:bold;font-family:sans-serif;color:#080c07;background:rgba(255,255,255,0.5)">Out Fit of The Day</span>
+                <br><br><br><br><span style="font-size:180%;font-weight:bold;font-family:sans-serif;color:#ffffff;background:rgba(9,3,4,0.5)">Out Fit of The Day</span>
 <!--                <br><span style="font-size:80%;font-weight:normal;font-family:sans-serif;color:#0c0708;background:rgba(255,255,255,0.5)">Recommend Fashions For You</span><br><br><br><br>-->
             </h1>
         </div>
@@ -51,29 +51,22 @@
     <div class="album py-5 bg-light">
         <div class="container">
             <div class="row">
-                {% for data in itemData %}
-                <div class="col-md-4">
+                {% for data in item_data %}
+                <div class="col-md-3">
                     <div class="card mb-4 shadow-sm">
-                        <!--<svg class="bd-placeholder-img card-img-top" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">-->
-                            <!--<title>Placeholder</title>-->
-                        <!--</svg>-->
                         <div id="images">
                                 <div id="image">
-                                    <img src={{url_for('static', filename='uploads/' + data[4]) }} id="itemImage"/>
+                                    <img src="{{data[1]}}" id="itemImage" width="367px" height="500px"/>
                                 </div>
-                            </div>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-text text-danger">{{data[1]}}</h4>
-                            <div id="description">
-                                <p class="card-text text-muted">{{data[3]}}</p>
-                            </div>
-                            <h6 class="card-text text-muted">Stock: {{data[5]}}</h6>
-                            <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="card-text text-danger">{{data[0]}}</h4>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a type="button" class="btn btn-sm btn-outline-danger" href="/addToCart?productId={{data[0]}}">Add to Cart</a>
                                 </div>
-                                <p class="text-danger" style="font-size:150%">￥{{data[2]}}</p>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -8,9 +8,10 @@ auth = Blueprint('auth', __name__)
 @auth.route('/home')
 def home():
     if 'email' in session:
-        return render_template('index.html', loggedIn=True, user_name=session["user_name"])
+        item_data = get_rand_product()
+        return render_template('index.html', loggedIn=True, user_name=session["user_name"], item_data=item_data)
     else:
-        return render_template('index.html', loggedIn=False)
+        return redirect(url_for('main.home'))
 
 
 # register
