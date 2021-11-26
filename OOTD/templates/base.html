@@ -76,10 +76,23 @@
                     </div>
                 </li>
             </ul>
-            <form class="form-inline mr-4 my-3 my-lg-0" action="/search" method="POST">
-                <input class="form-control mr-sm-2" type="text" name = "product_name" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
-            </form>
+                <form class="form-inline mr-4 my-3 my-lg-0" action="/search" method="POST">
+                    <div class="input-group">
+                        <div class="input-group-text p-0">
+                            <select class="form-select form-select-lg shadow-none bg-light border-0">
+                                <option>Categories</option>
+                                <option>All</option>
+                                <option>Kids</option>
+                                <option>Women</option>
+                                <option>Men</option>
+                            </select>
+                        </div>
+                        <input class="form-control mr-sm-2" type="text" name = "product_name" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                    </div>
+                </form>
+       
+           
             {% if not loggedIn %}
             <a class="btn btn-outline-warning mr-sm-2 my-2 my-sm-0" href="/register_form">Sign up</a>
             <a class="btn btn-outline-warning mr-sm-2 my-2 my-sm-0" href="/login_form">Sign in</a>

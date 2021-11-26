@@ -17,6 +17,15 @@
     .container{
         max-width: 1520px;
     }
+    .text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+                line-clamp: 2; 
+         -webkit-box-orient: vertical;
+        }
+
     body {
         min-height: 75rem;
     }
@@ -63,7 +72,7 @@
                                 </div>
                         </div>
                         <div class="card-body">
-                            <h4 class="card-text text-danger">{{data[0]}}</h4>
+                            <h4 class="text">{{data[0]}}</h4>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
