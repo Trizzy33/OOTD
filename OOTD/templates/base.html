@@ -7,6 +7,7 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"><a class="dropdown-item" href="/displayCategory/5">Fall</a> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#563d7c" />
+    
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -19,6 +20,28 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+   
+    <link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+    <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#autocomplete").autocomplete({
+                source:function(request, response) {
+                    $.getJSON("{{url_for('main.autocomplete')}}",{
+                        q: request.term, // in flask, "q" will be the argument to look for using request.args
+                    }, function(data) {
+                        response(data.matching_results); // matching_results from jsonify
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui) {
+                    console.log(ui.item.value); // not in your question, but might help later
+                }
+            });
+        })
+        
+    </script>
     <!--<link rel="stylesheet" href="{{ url_for('static', filename= 'style.css') }}">-->
     <title>{% block title %}More shopping, more happiness!{% endblock %}</title>
     {% block head %}
@@ -76,23 +99,24 @@
                     </div>
                 </li>
             </ul>
-                <form class="form-inline mr-4 my-3 my-lg-0" action="/search" method="POST">
-                    <div class="input-group">
-                        <div class="input-group-text p-0">
-                            <select class="form-select form-select-lg shadow-none bg-light border-0">
+          
+            <form class="form-inline mr-4 my-3 my-lg-0" action="/search" method="POST">
+                <div class="input-group">
+                    <div class="input-group-text p-0">
+                        <select class="form-select form-select-lg shadow-none bg-light border-0" name = "search_category">
                                 <option>Categories</option>
                                 <option>All</option>
                                 <option>Kids</option>
                                 <option>Women</option>
                                 <option>Men</option>
-                            </select>
-                        </div>
-                        <input class="form-control mr-sm-2" type="text" name = "product_name" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                        </select>
                     </div>
-                </form>
-       
-           
+                    <input class="form-control mr-sm-2" type="text" name = "product_name" placeholder="Search" aria-label="Search" id="autocomplete">
+                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                    
+                </div>
+            </form>
+            
             {% if not loggedIn %}
             <a class="btn btn-outline-warning mr-sm-2 my-2 my-sm-0" href="/register_form">Sign up</a>
             <a class="btn btn-outline-warning mr-sm-2 my-2 my-sm-0" href="/login_form">Sign in</a>
@@ -117,6 +141,7 @@
     </nav>
     {% block content %}
     {% endblock %}
+
 </body>
 
 </html>

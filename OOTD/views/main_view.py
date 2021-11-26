@@ -1,8 +1,9 @@
 from flask import *
+from flask import jsonify
 # from flask_login import  current_user, login_user, login_required, logout_user
 from OOTD.views.database import *
 from OOTD.templates import *
-
+from OOTD.settings import db
 main = Blueprint("main", __name__)
 
 
@@ -103,8 +104,9 @@ def root():
 def search_product():
     search_product_form = request.form
     product_name = search_product_form["product_name"]
-    print(product_name)
-    item_data = search_product_name(product_name)
+    search_category = search_product_form["search_category"]
+    print(search_category)
+    item_data = search_product_name(product_name, search_category)
     # for data in item_data:
     #     print(data[1])
     return render_template('display.html',item_data=item_data, exist_item=True)
@@ -120,3 +122,11 @@ def display_category(id):
         search = "gender = 'Women'"
     item_data = search_product_cate(search)
     return render_template('display.html', item_data=item_data, exist_item=True)
+
+
+@main.route('/autocomplete', methods=['GET'])
+def autocomplete():
+    search = request.args.get('q')
+    results = auto_complete(search)
+    results = [mv[0] for mv in results.all()]
+    return jsonify(matching_results=results)
