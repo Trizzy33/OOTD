@@ -289,18 +289,19 @@ def get_rank_products(table):
         for category in categories:
             res = search_product_cate(f'cate_master = "{category}" OR cate_sub = "{category}"')
             for i, itr in enumerate(res):
-                if i >= 10:
+                if i >= app.config["MAX_PER_CATEGORY"]:
                     break
                 if itr[2] not in chosen:
                     products.append(itr)
                     chosen.add(itr[2])
 
-    if len(products) < 32:
+    # if not enough
+    if len(products) < app.config["MAX_PRODUCTS"]:
         res = get_rand_product()
         for itr in res:
             if itr[2] in chosen:
                 continue
-            if len(products) > 32:
+            if len(products) > app.config["MAX_PRODUCTS"]:
                 break
             products.append(itr)
             chosen.add(itr[2])
@@ -309,7 +310,7 @@ def get_rank_products(table):
 def update_rank(table, category):
     if category in table:
         table[category] += 1
-    elif len(table) < app.config["TOP"]:
+    elif len(table) < app.config["TOP_CATEGORIES"]:
         table[category] = 1
     else:
         for itr in table.keys():
