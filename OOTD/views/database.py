@@ -231,7 +231,6 @@ def get_rand_product():
     conn.close()
     return result
 
-
 def search_product_cate(search):
     conn = db.connect()
     query = 'SELECT product.name, product.url FROM product JOIN (SELECT id FROM category WHERE {} )' \
@@ -246,3 +245,15 @@ def auto_complete(search):
     results = conn.execute(query)
     conn.close()
     return results
+
+def get_rand_blog():
+    random.seed(time())
+    start_id = random.randrange(0, 1000)
+    conn = db.connect()
+    query = ' SELECT user.name, blog.blog_text, product.name' \
+            ' FROM project.user join project.blog on user_id = author_id join project.blog_product on id = blog_id join project.product on product_id = project.product.id' \
+            ' WHERE blog.id > "{}" AND blog.id < "{}";'.format(start_id, start_id+20)
+    result = conn.execute(query)
+    conn.close()
+    return result
+
