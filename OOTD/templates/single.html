@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-
 {% block content %}
     {% if exist_item %}
     
     <div class = container>
         <div class="row">
             <div class="col-md-12">
-                <div class="heading">
-                    <h2>Product Details</h2>
+                <div class="card-body" >
+                    <h2 class　= "text">Product Details</h2>
+                    <hr>
                 </div>
             </div>
         </div>
@@ -19,17 +19,21 @@
                 </div>
                 <div class="col-md-6 align-self-center text-center text-md-left">
                     <div class="content">
-                        
-                        <h4 class="subheading">{{data[3]}}</h4>
+                        <h4 class="subheading">{{data[1]}}</h4>
                         <ul>
-                            <li>Year: {{data[1]}}</li>
-                            <li>Gender: {{data[6]}}</li>
-                            <li>Base color: {{data[7]}}</li>
+                            <li>Year: {{data[0]}}</li>
+                            <li>Gender: {{data[2]}}</li>
+                            <li>Base color: {{data[3]}}</li>
                         </ul>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, sed, assumenda. Tenetur
-                            sed esse, voluptas voluptate est veniam numquam, quis magni. Architecto minus suscipit
-                            qua, quo harum deserunt consequatur cumque!</p>
                         <a href="" class="btn btn-outline-warning my-2 my-sm-0">Add to my favorite</a>
+                        <hr>
+                        <h5>Comment section</h5>
+                        {% if (comment_data is defined) and comment_data.fetchone() is not none %}
+                            <p>{{comment_data.fetchone()[0]}}</p>
+                        {% else %}
+                            <p>Be the first one to comment on this product!<p>
+                        {% endif %}
+                        
                     </div>
                 </div>
             </div>

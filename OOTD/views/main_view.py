@@ -146,8 +146,10 @@ def show_info(product_id):
     exist_item = False
     if item_data is not None:
         exist_item = True
+    comment_data = get_comment(product_id)
+    print(comment_data.fetchone())
     if 'email' in session:
-        return render_template('single.html', item_data=item_data, exist_item = exist_item,loggedIn=True,
+        return render_template('single.html', item_data=item_data, comment_data = comment_data, exist_item = exist_item,loggedIn=True,
                            user_name=session["user_name"])
     else:
-        return render_template('single.html', item_data=item_data, exist_item=exist_item, loggedIn=False)
+        return render_template('single.html', item_data=item_data, comment_data = comment_data, exist_item=exist_item, loggedIn=False)

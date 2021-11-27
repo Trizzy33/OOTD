@@ -15,11 +15,12 @@ def find_product(product_name: str):
 
 def get_product_byID(product_id):
     conn = db.connect()
-    query = "select * from product natural join style where id = {} limit 1;".format(product_id)
+    query = "select year, name, gender, base_color, url from product natural join style where id = {} limit 1;".format(product_id)
     result = conn.execute(query)
     conn.close()
     # result is a cursor result object
     return result
+
 
 # search username
 def find_user(user_email: str):
@@ -257,3 +258,10 @@ def get_rand_blog():
     conn.close()
     return result
 
+#search product comment using product id 
+def get_comment(product_id):
+    conn = db.connect()
+    query = "select distinct blog_text from blog natural join blog_product natural join product where id = {} limit 1;".format(product_id)
+    result = conn.execute(query)
+    conn.close()
+    return result
