@@ -13,6 +13,12 @@ def home():
     return render_template('index.html', loggedIn=False, item_data=item_data)
 
 
+@main.route('/blog')
+def blog():
+    item_data = get_rand_blog()
+    return render_template('blog.html', loggedIn=False, item_data=item_data)
+
+
 @main.route("/category", methods=["POST"])
 def category():
     category_form = request.form
