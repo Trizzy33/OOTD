@@ -146,4 +146,8 @@ def show_info(product_id):
     exist_item = False
     if item_data is not None:
         exist_item = True
-    return render_template('single.html', item_data=item_data, exist_item = exist_item)
+    if 'email' in session:
+        return render_template('single.html', item_data=item_data, exist_item = exist_item,loggedIn=True,
+                           user_name=session["user_name"])
+    else:
+        return render_template('single.html', item_data=item_data, exist_item=exist_item, loggedIn=False)
