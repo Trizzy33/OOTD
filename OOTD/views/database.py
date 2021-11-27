@@ -233,7 +233,7 @@ def get_rand_product():
 
 def search_product_cate(search):
     conn = db.connect()
-    query = 'SELECT product.name, product.url FROM product JOIN (SELECT id FROM category WHERE {} )' \
+    query = 'SELECT product.name, product.url, product.id FROM product JOIN (SELECT id FROM category WHERE {} )' \
             'AS cate ON product.category_id = cate.id LIMIT 100;'.format(search)
     result = conn.execute(query)
     conn.close()
