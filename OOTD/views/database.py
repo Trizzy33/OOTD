@@ -1,7 +1,7 @@
 # database manipulate
 from time import time
 
-from OOTD.settings import db
+from OOTD.settings import db, gcached_table, app
 import random
 
 # search product, return id
@@ -227,11 +227,10 @@ def get_rand_product():
     random.seed(time())
     start_id = random.randrange(0, 4000)
     conn = db.connect()
-    query = 'SELECT name, url, id FROM product WHERE id > "{}" AND id < "{}";'.format(start_id, start_id+20)
+    query = 'SELECT name, url, id FROM product WHERE id > "{}" AND id < "{}";'.format(start_id, start_id+50)
     result = conn.execute(query)
     conn.close()
     return result
-
 
 def search_product_cate(search):
     conn = db.connect()
@@ -262,3 +261,63 @@ def get_rand_blog():
     conn.close()
     return result
 
+def get_product_categories(product_id):
+    # get product's cate_master and cate_sub
+    conn = db.connect()
+    query = f"""
+        SELECT category.cate_master, category.cate_sub 
+        FROM product JOIN category ON product.category_id = category.id 
+        WHERE product.id = "{product_id}";
+    """
+    result = conn.execute(query)
+    conn.close()
+    return result
+
+###### Recommendation Algorithm
+
+# TODO personalized ranking
+
+# global ranking
+def get_rank_products(table):
+    categories = sorted(table.items(), key=lambda x: -x[1])
+    categories = [itr[0] for itr in categories]
+
+    products = []
+    chosen = set()
+
+    if len(categories) != 0:
+        for category in categories:
+            res = search_product_cate(f'cate_master = "{category}" OR cate_sub = "{category}"')
+            for i, itr in enumerate(res):
+                if i >= 10:
+                    break
+                if itr[2] not in chosen:
+                    products.append(itr)
+                    chosen.add(itr[2])
+
+    if len(products) < 32:
+        res = get_rand_product()
+        for itr in res:
+            if itr[2] in chosen:
+                continue
+            if len(products) > 32:
+                break
+            products.append(itr)
+            chosen.add(itr[2])
+    return products
+
+def update_rank(table, category):
+    if category in table:
+        table[category] += 1
+    elif len(table) < app.config["TOP"]:
+        table[category] = 1
+    else:
+        for itr in table.keys():
+            table[itr] -= 1
+            if table[itr] == 0:
+                del table[itr]
+
+def update_rank_global(categories):
+    for category in categories:
+        update_rank(gcached_table, category[0])
+        update_rank(gcached_table, category[1])
