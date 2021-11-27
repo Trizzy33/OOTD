@@ -15,7 +15,7 @@ def find_product(product_name: str):
 
 def get_product_byID(product_id):
     conn = db.connect()
-    query = "select * from product where id = {};".format(product_id)
+    query = "select * from product natural join style where id = {} limit 1;".format(product_id)
     result = conn.execute(query)
     conn.close()
     # result is a cursor result object
