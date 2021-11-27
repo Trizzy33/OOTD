@@ -130,3 +130,14 @@ def autocomplete():
     results = auto_complete(search)
     results = [mv[0] for mv in results.all()]
     return jsonify(matching_results=results)
+
+
+@main.route('/single/<int:product_id>')
+def show_info(product_id):
+    # get your list of valves from wherever it comes from
+    item_data = get_product_byID(product_id)
+    print(item_data)
+    exist_item = False
+    if item_data is not None:
+        exist_item = True
+    return render_template('single.html', item_data=item_data, exist_item = exist_item)

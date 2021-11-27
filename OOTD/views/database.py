@@ -13,6 +13,13 @@ def find_product(product_name: str):
     # result is a cursor result object
     return result
 
+def get_product_byID(product_id):
+    conn = db.connect()
+    query = "select * from product where id = {};".format(product_id)
+    result = conn.execute(query)
+    conn.close()
+    # result is a cursor result object
+    return result
 
 # search username
 def find_user(user_email: str):
@@ -219,7 +226,7 @@ def get_rand_product():
     random.seed(time())
     start_id = random.randrange(0, 4000)
     conn = db.connect()
-    query = 'SELECT name, url FROM product WHERE id > "{}" AND id < "{}";'.format(start_id, start_id+20)
+    query = 'SELECT name, url, id FROM product WHERE id > "{}" AND id < "{}";'.format(start_id, start_id+20)
     result = conn.execute(query)
     conn.close()
     return result
