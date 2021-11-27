@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, request, session, render_template, url_for, flash
 from OOTD.views.database import *
-
+from OOTD.settings import gcached_table
 
 auth = Blueprint('auth', __name__)
 
@@ -8,7 +8,8 @@ auth = Blueprint('auth', __name__)
 @auth.route('/home')
 def home():
     if 'email' in session:
-        item_data = get_rand_product()
+        print(gcached_table)
+        item_data = get_rank_products(gcached_table)
         return render_template('index.html', loggedIn=True, user_name=session["user_name"], item_data=item_data)
     else:
         return redirect(url_for('main.home'))

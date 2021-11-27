@@ -141,8 +141,9 @@ def autocomplete():
 @main.route('/single/<int:product_id>')
 def show_info(product_id):
     # get your list of valves from wherever it comes from
+    categories = get_product_categories(product_id)
+    update_rank_global(categories)
     item_data = get_product_byID(product_id)
-    print(item_data)
     exist_item = False
     if item_data is not None:
         exist_item = True
