@@ -214,7 +214,8 @@ def get_user_info(email):
 def search_product_name(product_name, search_category):
     conn = db.connect()
     if search_category == "Women" or search_category == "Men":
-        query = 'SELECT distinct name, url, id FROM product NATURAL JOIN style WHERE gender LIKE "%%{}%%" AND name like "%%{}%%" LIMIT 100;'.format(search_category, product_name)
+        query = 'SELECT distinct name, url, id FROM product NATURAL JOIN style WHERE gender' \
+                ' LIKE "%%{}%%" AND name like "%%{}%%" LIMIT 100;'.format(search_category, product_name)
     else:
         query = 'SELECT distinct name, url, id FROM product WHERE name like "%%{}%%" LIMIT 100;'.format(product_name)
     item_data = conn.execute(query)
@@ -231,6 +232,7 @@ def get_rand_product():
     conn.close()
     return result
 
+
 def search_product_cate(search):
     conn = db.connect()
     query = 'SELECT product.name, product.url, product.id FROM product JOIN (SELECT id FROM category WHERE {} )' \
@@ -239,6 +241,7 @@ def search_product_cate(search):
     conn.close()
     return result
 
+
 def auto_complete(search):
     conn = db.connect()
     query = 'SELECT product.name FROM product WHERE name like "%%{}%%" LIMIT 10;'.format(search)
@@ -246,12 +249,14 @@ def auto_complete(search):
     conn.close()
     return results
 
+
 def get_rand_blog():
     random.seed(time())
     start_id = random.randrange(0, 1000)
     conn = db.connect()
     query = ' SELECT user.name, blog.blog_text, product.name' \
-            ' FROM project.user join project.blog on user_id = author_id join project.blog_product on id = blog_id join project.product on product_id = project.product.id' \
+            ' FROM project.user join project.blog on user_id = author_id join project.blog_product on id = blog_id ' \
+            'join project.product on product_id = project.product.id' \
             ' WHERE blog.id > "{}" AND blog.id < "{}";'.format(start_id, start_id+20)
     result = conn.execute(query)
     conn.close()
