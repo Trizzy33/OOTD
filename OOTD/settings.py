@@ -7,6 +7,8 @@ app.secret_key = 'cs411'
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 
+gcached_table = {}
+
 app.config.from_pyfile("ootd.cfg")
 
 # init MySQL

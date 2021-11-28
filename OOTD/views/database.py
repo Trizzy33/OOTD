@@ -1,7 +1,7 @@
 # database manipulate
 from time import time
 
-from OOTD.settings import db
+from OOTD.settings import db, gcached_table, app
 import random
 
 # search product, return id
@@ -15,11 +15,12 @@ def find_product(product_name: str):
 
 def get_product_byID(product_id):
     conn = db.connect()
-    query = "select * from product where id = {};".format(product_id)
+    query = "select year, name, gender, base_color, url from product natural join style where id = {} limit 1;".format(product_id)
     result = conn.execute(query)
     conn.close()
     # result is a cursor result object
     return result
+
 
 # search username
 def find_user(user_email: str):
@@ -214,9 +215,10 @@ def get_user_info(email):
 def search_product_name(product_name, search_category):
     conn = db.connect()
     if search_category == "Women" or search_category == "Men":
-        query = 'SELECT distinct name, url FROM product NATURAL JOIN style WHERE gender LIKE "%%{}%%" AND name like "%%{}%%" LIMIT 100;'.format(search_category, product_name)
+        query = 'SELECT distinct name, url, id FROM product NATURAL JOIN style WHERE gender' \
+                ' LIKE "%%{}%%" AND name like "%%{}%%" LIMIT 100;'.format(search_category, product_name)
     else:
-        query = 'SELECT distinct name, url FROM product WHERE name like "%%{}%%" LIMIT 100;'.format(product_name)
+        query = 'SELECT distinct name, url, id FROM product WHERE name like "%%{}%%" LIMIT 100;'.format(product_name)
     item_data = conn.execute(query)
     conn.close()
     return item_data
@@ -226,18 +228,19 @@ def get_rand_product():
     random.seed(time())
     start_id = random.randrange(0, 4000)
     conn = db.connect()
-    query = 'SELECT name, url, id FROM product WHERE id > "{}" AND id < "{}";'.format(start_id, start_id+20)
+    query = 'SELECT name, url, id FROM product WHERE id > "{}" AND id < "{}";'.format(start_id, start_id+50)
     result = conn.execute(query)
     conn.close()
     return result
 
 def search_product_cate(search):
     conn = db.connect()
-    query = 'SELECT product.name, product.url FROM product JOIN (SELECT id FROM category WHERE {} )' \
+    query = 'SELECT product.name, product.url, product.id FROM product JOIN (SELECT id FROM category WHERE {} )' \
             'AS cate ON product.category_id = cate.id LIMIT 100;'.format(search)
     result = conn.execute(query)
     conn.close()
     return result
+
 
 def auto_complete(search):
     conn = db.connect()
@@ -246,14 +249,84 @@ def auto_complete(search):
     conn.close()
     return results
 
+
 def get_rand_blog():
     random.seed(time())
     start_id = random.randrange(0, 1000)
     conn = db.connect()
     query = ' SELECT user.name, blog.blog_text, product.name' \
-            ' FROM project.user join project.blog on user_id = author_id join project.blog_product on id = blog_id join project.product on product_id = project.product.id' \
+            ' FROM project.user join project.blog on user_id = author_id join project.blog_product on id = blog_id ' \
+            'join project.product on product_id = project.product.id' \
             ' WHERE blog.id > "{}" AND blog.id < "{}";'.format(start_id, start_id+20)
     result = conn.execute(query)
     conn.close()
     return result
 
+#search product comment using product id 
+def get_comment(product_id):
+    conn = db.connect()
+    query = "select distinct blog_text from blog natural join blog_product natural join product where id = {} limit 1;".format(product_id)
+    result = conn.execute(query)
+    conn.close()
+    return result
+def get_product_categories(product_id):
+    # get product's cate_master and cate_sub
+    conn = db.connect()
+    query = f"""
+        SELECT category.cate_master, category.cate_sub 
+        FROM product JOIN category ON product.category_id = category.id 
+        WHERE product.id = "{product_id}";
+    """
+    result = conn.execute(query)
+    conn.close()
+    return result
+
+###### Recommendation Algorithm
+
+# TODO personalized ranking
+
+# global ranking
+def get_rank_products(table):
+    categories = sorted(table.items(), key=lambda x: -x[1])
+    categories = [itr[0] for itr in categories]
+
+    products = []
+    chosen = set()
+
+    if len(categories) != 0:
+        for category in categories:
+            res = search_product_cate(f'cate_master = "{category}" OR cate_sub = "{category}"')
+            for i, itr in enumerate(res):
+                if i >= app.config["MAX_PER_CATEGORY"]:
+                    break
+                if itr[2] not in chosen:
+                    products.append(itr)
+                    chosen.add(itr[2])
+
+    # if not enough
+    if len(products) < app.config["MAX_PRODUCTS"]:
+        res = get_rand_product()
+        for itr in res:
+            if itr[2] in chosen:
+                continue
+            if len(products) > app.config["MAX_PRODUCTS"]:
+                break
+            products.append(itr)
+            chosen.add(itr[2])
+    return products
+
+def update_rank(table, category):
+    if category in table:
+        table[category] += 1
+    elif len(table) < app.config["TOP_CATEGORIES"]:
+        table[category] = 1
+    else:
+        for itr in table.keys():
+            table[itr] -= 1
+            if table[itr] == 0:
+                del table[itr]
+
+def update_rank_global(categories):
+    for category in categories:
+        update_rank(gcached_table, category[0])
+        update_rank(gcached_table, category[1])
