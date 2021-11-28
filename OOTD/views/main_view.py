@@ -163,7 +163,6 @@ def rate_product():
     prev_url = request.referrer
     product_id = prev_url[prev_url.rfind('/')+1:]
   
-    print (session['email'])
     if 'email' not in session:
         error_msg = "Please log in first"
         return render_template('login.html', error=error_msg)
