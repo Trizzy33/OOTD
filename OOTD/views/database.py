@@ -349,12 +349,25 @@ def find_productStyle(product_id):
     print(result)
     return result
 
-
 def rated_outfit(rating, product_id, user_id, style_id):
-    conn = db.connect(rating)
-    
+    conn = db.connect()
     query = 'insert into outfits values ("{}","{}","{}","{}");'.format(
         product_id, style_id, rating, user_id)
     conn.execute(query)
     conn.close()
+    
+def get_user_outfits(user_id):
+    conn = db.connect()
+    query = 'SELECT distinct product.name, url, product.id, user_rating FROM product JOIN outfits JOIN user JOIN style WHERE product.id = outfits.id and user.user_id = "{}";'.format(user_id)
+    result = conn.execute(query)
+    conn.close()
+    return result
+
+def get_user_rating(product_id, user_id):
+    conn = db.connect()
+    query = 'SELECT style_id FROM product_style WHERE product_id = "{}" AND user_id = "{};'.format(product_id, user_id)
+    result = conn.execute(query)
+    rating = result.first()[0]
+    conn.close()
+    return rating
     

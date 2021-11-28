@@ -182,4 +182,16 @@ def rate_product():
 
         flash('Added to your outfits successfully')
         return redirect(request.referrer)
-       
+
+@main.route("/outfit_page")
+def outfit_page():
+    if 'email' not in session:
+        flash("Please log in first")
+        return redirect(url_for('login_form'))
+    else:
+        email = session['email']
+        profile_data = get_user_info(email)
+        user_id = find_userid(email).first()[0]
+        item_data = get_user_outfits(user_id)
+        
+    return render_template("outfit_page.html", item_data = item_data, loggedIn=True, user_name=session["user_name"], profile_data = profile_data)

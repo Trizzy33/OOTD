@@ -1,1 +1,123 @@
 {% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .checked {
+        color: orange;
+    }
+    #images{
+        display:flex;
+        flex-direction:row;
+    }
+
+    #image{
+        width:380px;
+        height:380px;
+        overflow:hidden;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    .container{
+        max-width: 1500px;
+    }
+    .text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines to show */
+                line-clamp: 1; 
+         -webkit-box-orient: vertical;
+        }
+
+    body {
+        min-height: 75rem;
+    }
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+    }
+
+    #description {
+        overflow:hidden;
+        text-overflow: ellipsis;
+        height:80px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right ">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5 border-bottom"><img class="rounded-circle mt-5" width="150px" src="https://avatarfiles.alphacoders.com/755/75537.jpg"><span class="font-weight-bold">{{profile_data[0]}}</span><span> </span></div>
+            
+            <div class="row mt-2"><div class="col-md-6"><label class="labels">Name : {{profile_data[0]}}</label></div></div>
+            <div class="row mt-2">
+                <div class="col-md-6"><label class="labels">Gender : {{profile_data[1]}}</label></div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6"><label class="labels">DOB : {{profile_data[2]}}</label></div>
+            </div>
+        </div>
+        
+        <div class="col-md-8 ">
+            <div class="p-1">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Favorite Outfits</h4>
+                </div>
+                <div class="album py-5 bg-light">
+                    <div class="container">
+                        <div class="row">
+                            {% for data in item_data %}
+                            <div class="col-sm-4">
+                                <div class="card mb-1 shadow-sm ">
+                                    <div id="images">
+                                            <div id="image">
+                                                <img src="{{data[1]}}" id="itemImage" width="184px" height="250px"/>
+                                            </div>
+                                            <div class="thumbnail"> <a class="close" href="#">×</a></div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="card-text text-danger text">{{data[0]}}</h4>
+                                        <a href='{{ url_for("main.show_info", product_id = data[2] )}}'>Product detail</a>
+                                       
+                                            <div class="score-wrap">
+                                                {% set count = namespace(value=1) %}
+                                         
+                                                {% for star in range(data[3]|int - 1) %}
+                                                    <i class="fa fa-star checked" aria-hidden="true"></i>
+                                                    {% set count.value = count.value + 1 %}
+                                                {% endfor %}
+                                                <i class="fa fa-star checked" aria-hidden="true"></i>
+                                                {% if count.value|float != data[3] %}
+                                                    <i class="fa fa-star-half checked" aria-hidden="true"></i>
+                                                {% endif %}
+                                            </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                            {% endfor %}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+</div>
+</div>
+{% endblock %}
