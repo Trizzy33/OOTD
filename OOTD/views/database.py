@@ -271,6 +271,8 @@ def get_rand_blog():
     conn.close()
     return result
 
+
+
 #search product comment using product id 
 def get_comment(product_id):
     conn = db.connect()
@@ -278,6 +280,8 @@ def get_comment(product_id):
     result = conn.execute(query)
     conn.close()
     return result
+
+
 def get_product_categories(product_id):
     # get product's cate_master and cate_sub
     conn = db.connect()
