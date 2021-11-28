@@ -1,15 +1,15 @@
-from flask import *
+from flask import Blueprint, redirect, request, session, render_template, url_for, flash
 from flask import jsonify
 # from flask_login import  current_user, login_user, login_required, logout_user
 from OOTD.views.database import *
 from OOTD.templates import *
-from OOTD.settings import db
+from OOTD.settings import db, gcached_table
 main = Blueprint("main", __name__)
 
 
 @main.route('/')
 def home():
-    item_data = get_rand_product()
+    item_data = get_rank_products(gcached_table)
     return render_template('index.html', loggedIn=False, item_data=item_data)
 
 
@@ -141,8 +141,7 @@ def autocomplete():
 @main.route('/single/<int:product_id>')
 def show_info(product_id):
     # get your list of valves from wherever it comes from
-    categories = get_product_categories(product_id)
-    update_rank_global(categories)
+    update_rank_global(product_id)
     item_data = get_product_byID(product_id)
     exist_item = False
     if item_data is not None:
@@ -151,6 +150,7 @@ def show_info(product_id):
     a = comment_data.fetchone()
     
     if 'email' in session:
+        update_rank_local(product_id)
         return render_template('single.html', item_data=item_data, comment_data = a, exist_item = exist_item,loggedIn=True,
                            user_name=session["user_name"])
     else:
