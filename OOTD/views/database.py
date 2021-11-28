@@ -1,6 +1,6 @@
 # database manipulate
 from time import time
-
+from flask import session
 from OOTD.settings import db, gcached_table, app
 import random
 
@@ -242,8 +242,10 @@ def get_rand_product():
 
 def search_product_cate(search):
     conn = db.connect()
+    random.seed(time())
+    offset = random.randrange(0, 3600)
     query = 'SELECT product.name, product.url, product.id FROM product JOIN (SELECT id FROM category WHERE {} )' \
-            'AS cate ON product.category_id = cate.id LIMIT 100;'.format(search)
+            'AS cate ON product.category_id = cate.id LIMIT 100 OFFSET {};'.format(search, offset)
     result = conn.execute(query)
     conn.close()
     return result
@@ -290,8 +292,6 @@ def get_product_categories(product_id):
 
 ###### Recommendation Algorithm
 
-# TODO personalized ranking
-
 # global ranking
 def get_rank_products(table):
     categories = sorted(table.items(), key=lambda x: -x[1])
@@ -333,7 +333,16 @@ def update_rank(table, category):
             if table[itr] == 0:
                 del table[itr]
 
-def update_rank_global(categories):
+def update_rank_local(product_id):
+    categories = get_product_categories(product_id)
+    table = session["ucached_table"]
+    for category in categories:
+        update_rank(table, category[0])
+        update_rank(table, category[1])
+    session["ucached_table"] = table
+
+def update_rank_global(product_id):
+    categories = get_product_categories(product_id)
     for category in categories:
         update_rank(gcached_table, category[0])
         update_rank(gcached_table, category[1])

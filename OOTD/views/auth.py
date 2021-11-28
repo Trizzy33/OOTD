@@ -1,6 +1,8 @@
 from flask import Blueprint, redirect, request, session, render_template, url_for, flash
 from OOTD.views.database import *
-from OOTD.settings import gcached_table
+from OOTD.settings import app, gcached_table
+import json
+import os
 
 auth = Blueprint('auth', __name__)
 
@@ -9,11 +11,11 @@ auth = Blueprint('auth', __name__)
 def home():
     if 'email' in session:
         print(gcached_table)
-        item_data = get_rank_products(gcached_table)
+        print(session["ucached_table"])
+        item_data = get_rank_products(session["ucached_table"])
         return render_template('index.html', loggedIn=True, user_name=session["user_name"], item_data=item_data)
     else:
         return redirect(url_for('main.home'))
-
 
 # register
 @auth.route('/register', methods=["POST"])
@@ -64,6 +66,11 @@ def login():
     if is_valid(email, password):
         session['email'] = email
         session['user_name'] = find_user(email)
+        path = os.path.join(app.config["PREFERENCES_DIR"], email + ".json")
+        session["ucached_table"] = {}
+        if os.path.isfile(path):
+            with open(path, "r") as f:
+                session["ucached_table"] = json.load(f)
         flash("Login Successfully")
         return redirect(url_for('auth.home'))
     else:
@@ -74,6 +81,11 @@ def login():
 # logout
 @auth.route('/logout')
 def logout():
+    email = session["email"]
+    path = os.path.join(app.config["PREFERENCES_DIR"], email + ".json")
+    with open(path, "w+") as fp:
+        json.dump(session["ucached_table"], fp)
+    session.pop("ucached_table", None)
     session.pop('email', None)
     flash("Logout Successfully!")
     return redirect(url_for('auth.home'))
