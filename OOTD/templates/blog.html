@@ -76,6 +76,15 @@
         font-size: 13px;
     }
 
+    div {
+        margin: auto;
+        display: block;
+    }
+    h2 {
+        padding-top: 50px;
+        margin: auto;
+        display: block;
+    }
 </style>
 
 
@@ -84,7 +93,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <h2 align="center">Blogs</h2>
+            <h2 align="center">Trending</h2>
         </div>
     </div>
     <div class="carousel-reviews broun-block">
@@ -97,17 +106,14 @@
                             <div class="col-md-4 col-sm-6">
                                 <div class="block-text rel zmin">
                                     <a title="" href="#">{{data[2]}}</a>
-                                    <div class="mark">My rating: <span class="rating-input"><span data-value="0" class="glyphicon glyphicon-star"></span><span data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2" class="glyphicon glyphicon-star"></span><span data-value="3" class="glyphicon glyphicon-star"></span><span data-value="4" class="glyphicon glyphicon-star-empty"></span><span data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span></div>
                                     <p>{{data[1]}}</p>
                                     <ins class="ab zmin sprite sprite-i-triangle block"></ins>
                                 </div>
                                 <div class="person-text rel">
                                     <a title="" href="#">{{data[0]}}</a>
-                                    <i>from Glasgow, Scotland</i>
                                 </div>
                             </div>
                         </div>
-
                 </div>
                 {% endfor %}
             </div>
