@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {%block head%}
 <!-- default styles -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+
 <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
 
 <!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme CSS files as mentioned below (and change the theme property of the plugin) -->
@@ -51,12 +51,7 @@
                             </div>
                       
                             <button type="submit" class="btn btn-outline-warning my-2 my-sm-0">Add to my favorite</button>
-                            {% if errmsg is defined %}
-                                <p style = color:#FF5733>{{errmsg}}</p>
-                            {% endif %}
-                            {% if sucmsg is defined %}
-                                <p style = color:#50C878>{{sucmsg}}</p>
-                            {% endif %}
+                          
                         </form>
                         <hr>
                         <h5>Comment section</h5>

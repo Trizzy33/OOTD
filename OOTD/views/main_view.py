@@ -162,10 +162,7 @@ def rate_product():
     rating = form["rating"]
     prev_url = request.referrer
     product_id = prev_url[prev_url.rfind('/')+1:]
-    item_data = get_product_byID(product_id)
-    comment_data = get_comment(product_id)
-    a = comment_data.fetchone()
-    print (session['email'])
+  
     if 'email' not in session:
         error_msg = "Please log in first"
         return render_template('login.html', error=error_msg)
@@ -180,10 +177,9 @@ def rate_product():
             rated_outfit(rating, product_id, user_id, style_id)
         except Exception as err:
             print(err)
-            errormsg = "You have already added this product"
-            return render_template('single.html', item_data=item_data, comment_data = a, exist_item = True, loggedIn=True,
-                           user_name=session["user_name"], errmsg = errormsg)
-        suc = "Added to your outfits successfully"
-        return render_template('single.html', item_data=item_data, comment_data = a, exist_item = True, loggedIn=True,
-                           user_name=session["user_name"], sucmsg = suc)
+            flash('You have already added this product')
+            return redirect(request.referrer)
+
+        flash('Added to your outfits successfully')
+        return redirect(request.referrer)
        
