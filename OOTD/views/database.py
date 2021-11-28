@@ -183,8 +183,8 @@ def find_userid(email):
     query = 'SELECT user_id FROM user WHERE email = "{}";'.format(email)
     result = conn.execute(query)
     conn.close()
-    print(result.first()[0])
-    return result.first()[0]
+    print(result)
+    return result
 
 
 # update password
@@ -211,6 +211,13 @@ def get_user_info(email):
     conn.close()
     return user_info
 
+def get_userOufit_info(email):
+    conn = db.connect()
+    query = 'SELECT name, gender, dob FROM user WHERE email = "{}";'.format(email)
+    result = conn.execute(query)
+    user_info = result.first()
+    conn.close()
+    return user_info
 
 def search_product_name(product_name, search_category):
     conn = db.connect()
@@ -330,3 +337,23 @@ def update_rank_global(categories):
     for category in categories:
         update_rank(gcached_table, category[0])
         update_rank(gcached_table, category[1])
+
+############################################
+# User rating for outfits
+############################################
+def find_productStyle(product_id):
+    conn = db.connect()
+    query = 'SELECT style_id FROM product_style WHERE product_id = "{}";'.format(product_id)
+    result = conn.execute(query)
+    conn.close()
+    print(result)
+    return result
+
+
+def rated_outfit(rating, product_id, user_id, style_id):
+    conn = db.connect(rating)
+    query = 'insert into outfits values ("{}","{}","{}","{}");'.format(
+        product_id, style_id, rating, user_id)
+    conn.execute(query)
+    conn.close()
+    

@@ -129,3 +129,12 @@ def edit_profile():
     except Exception as err:
         print(err)
     return redirect(url_for('auth.profile_form'))
+
+@auth.route("/outfit_page")
+def outfit_page():
+    if 'email' not in session:
+        return redirect(url_for('login_form'))
+    else:
+        email = session['email']
+        profile_data = get_user_info(outfit_page)
+    return render_template("profile.html", profileData=profile_data, email=email)

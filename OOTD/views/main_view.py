@@ -148,9 +148,42 @@ def show_info(product_id):
     if item_data is not None:
         exist_item = True
     comment_data = get_comment(product_id)
-    print(comment_data.fetchone())
+    a = comment_data.fetchone()
+    
     if 'email' in session:
-        return render_template('single.html', item_data=item_data, comment_data = comment_data, exist_item = exist_item,loggedIn=True,
+        return render_template('single.html', item_data=item_data, comment_data = a, exist_item = exist_item,loggedIn=True,
                            user_name=session["user_name"])
     else:
-        return render_template('single.html', item_data=item_data, comment_data = comment_data, exist_item=exist_item, loggedIn=False)
+        return render_template('single.html', item_data=item_data, comment_data = a, exist_item=exist_item, loggedIn=False)
+
+@main.route('/rate_product', methods=['GET','POST'])
+def rate_product():
+    form = request.form
+    rating = form["rating"]
+    prev_url = request.referrer
+    product_id = prev_url[prev_url.rfind('/')+1:]
+    item_data = get_product_byID(product_id)
+    comment_data = get_comment(product_id)
+    a = comment_data.fetchone()
+    print (session['email'])
+    if 'email' not in session:
+        error_msg = "Please log in first"
+        return render_template('login.html', error=error_msg)
+    else:
+        #add rating to database
+        user_email = session['email']
+
+        user_id = find_userid(user_email).first()[0]
+        style_id = find_productStyle(product_id).first()[0]
+
+        try:
+            rated_outfit(rating, product_id, user_id, style_id)
+        except Exception as err:
+            print(err)
+            errormsg = "You have already added this product"
+            return render_template('single.html', item_data=item_data, comment_data = a, exist_item = True, loggedIn=True,
+                           user_name=session["user_name"], errmsg = errormsg)
+        suc = "Added to your outfits successfully"
+        return render_template('single.html', item_data=item_data, comment_data = a, exist_item = True, loggedIn=True,
+                           user_name=session["user_name"], sucmsg = suc)
+       

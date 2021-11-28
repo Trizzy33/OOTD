@@ -1,7 +1,26 @@
 {% extends 'base.html' %}
+{%block head%}
+<!-- default styles -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme CSS files as mentioned below (and change the theme property of the plugin) -->
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+
+<!-- important mandatory libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+<!-- optionally if you need translation for your language then include locale file as mentioned below (replace LANG.js with your own locale file) -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+
+{%endblock%}
+
 {% block content %}
     {% if exist_item %}
-    
     <div class = container>
         <div class="row">
             <div class="col-md-12">
@@ -25,15 +44,27 @@
                             <li>Gender: {{data[2]}}</li>
                             <li>Base color: {{data[3]}}</li>
                         </ul>
-                        <a href="" class="btn btn-outline-warning my-2 my-sm-0">Add to my favorite</a>
+                        <form action = "{{ url_for('main.rate_product') }}" method="post">
+                           
+                            <div class="rating-wrapper">
+                                <input id="input-id" type="text" class="rating" data-size="sm" name = "rating">
+                            </div>
+                      
+                            <button type="submit" class="btn btn-outline-warning my-2 my-sm-0">Add to my favorite</button>
+                            {% if errmsg is defined %}
+                                <p style = color:#FF5733>{{errmsg}}</p>
+                            {% endif %}
+                            {% if sucmsg is defined %}
+                                <p style = color:#50C878>{{sucmsg}}</p>
+                            {% endif %}
+                        </form>
                         <hr>
                         <h5>Comment section</h5>
-                        {% if (comment_data is defined) and comment_data.fetchone() is not none %}
-                            <p>{{comment_data.fetchone()[0]}}</p>
+                        {% if comment_data[0]|length %}
+                            <p>User: "{{comment_data[0]}}"</p>
                         {% else %}
                             <p>Be the first one to comment on this product!<p>
                         {% endif %}
-                        
                     </div>
                 </div>
             </div>
