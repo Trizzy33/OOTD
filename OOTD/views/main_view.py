@@ -75,7 +75,7 @@ def list_outfits():
     results = get_outfits()
     return render_template("index1.html", results=results)
 
-
+"""
 @main.route('/delete_outfit', methods=["POST"])
 def delete_outfit():
     delete_outfit_form = request.form
@@ -86,7 +86,7 @@ def delete_outfit():
     except:
         return render_template("index1.html", del_outfit_result="failure")
     return render_template("index1.html", delete_outfit_result="success")
-
+"""
 
 @main.route('/list_adv1', methods=["GET", "POST"])
 def list_adv1():
@@ -136,6 +136,7 @@ def autocomplete():
     results = auto_complete(search)
     results = [mv[0] for mv in results.all()]
     return jsonify(matching_results=results)
+
 
 
 @main.route('/single/<int:product_id>')
@@ -193,5 +194,17 @@ def outfit_page():
         profile_data = get_user_info(email)
         user_id = find_userid(email).first()[0]
         item_data = get_user_outfits(user_id)
-        
+        for i in item_data:
+            print(i)
+        item_data = get_user_outfits(user_id)
     return render_template("outfit_page.html", item_data = item_data, loggedIn=True, user_name=session["user_name"], profile_data = profile_data)
+
+@main.route('/deleteOutfit', methods = ['POST'])
+def deleteOutfit(product_id=0):
+    print("called")
+    email = session['email']
+    user_id = find_userid(email).first()[0]
+    product_id = request.form['product_id']
+    print("productid:", product_id)
+    delete_outfit(user_id,product_id)
+    return 'Deleted'

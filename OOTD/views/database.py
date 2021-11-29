@@ -372,7 +372,7 @@ def rated_outfit(rating, product_id, user_id, style_id):
     
 def get_user_outfits(user_id):
     conn = db.connect()
-    query = 'SELECT distinct product.name, url, product.id, user_rating FROM product JOIN outfits JOIN user JOIN style WHERE product.id = outfits.id and user.user_id = "{}";'.format(user_id)
+    query = 'SELECT distinct product.name, url, product.id, user_rating FROM product JOIN outfits JOIN user JOIN style WHERE product.id = outfits.id and user.user_id = outfits.user_id and user.user_id = "{}";'.format(user_id)
     result = conn.execute(query)
     conn.close()
     return result
@@ -385,3 +385,12 @@ def get_user_rating(product_id, user_id):
     conn.close()
     return rating
     
+def delete_outfit(user_id, outfit_id):
+    conn = db.connect()
+    print("outfit", outfit_id, "user",user_id)
+    query = 'DELETE FROM outfits WHERE id = "{}" AND user_id = "{}";'.format(outfit_id, user_id)
+    conn.execute(query)
+    query = 'SELECT * FROM outfits WHERE id = "{}" AND user_id = "{}";'.format(outfit_id, user_id)
+    resutls = conn.execute(query)
+    print(resutls.first())
+    conn.close()
