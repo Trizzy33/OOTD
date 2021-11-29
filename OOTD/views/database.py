@@ -360,6 +360,7 @@ def find_productStyle(product_id):
 
 def rated_outfit(rating, product_id, user_id, style_id):
     conn = db.connect()
+    rating = rating or 0.0
     query = 'insert into outfits values ("{}","{}","{}","{}");'.format(
         product_id, style_id, rating, user_id)
     conn.execute(query)
