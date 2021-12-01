@@ -217,4 +217,5 @@ def ranking():
         return redirect(url_for('auth.login_form'))
     else:
         result = adv1()
-    return render_template("ranking.html", item_data = result, loggedIn=True, user_name=session["user_name"])
+        result2 = adv2()
+    return render_template("ranking.html", item_data = result, item_data2 = result2, loggedIn=True, user_name=session["user_name"])
