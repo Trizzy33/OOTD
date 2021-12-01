@@ -17,6 +17,7 @@ def home():
     else:
         return redirect(url_for('main.home'))
 
+
 # register
 @auth.route('/register', methods=["POST"])
 def register():
