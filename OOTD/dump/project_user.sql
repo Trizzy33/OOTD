@@ -54,7 +54,7 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `user_AFTER_INSERT` AFTER INSERT ON `user` FOR EACH ROW BEGIN
  SET @usr = (SELECT email FROM user WHERE email = new.email);
  IF @usr IS NULL THEN
-	INSERT INTO user(name, gender, dob, email, passsword) VALUES (new.name, new.gender, new.dob, new.email, new.password);
+	INSERT INTO user(name, gender, dob, email, password) VALUES (new.name, new.gender, new.dob, new.email, new.password);
     END IF;
 END */;;
 DELIMITER ;
