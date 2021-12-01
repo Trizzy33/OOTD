@@ -3,6 +3,7 @@ from time import time
 from flask import session
 from OOTD.settings import db, gcached_table, app
 import random
+import MySQLdb
 
 # search product, return id
 def find_product(product_name: str):
@@ -395,3 +396,19 @@ def delete_outfit(user_id, outfit_id):
     resutls = conn.execute(query)
     print(resutls.first())
     conn.close()
+
+
+def lucky_person():
+    conn = db.connect()
+    #cursor = conn.cursor()
+    args = "a"
+    #cursor.callproc('luck_user', args)
+    #result = cursor.stored_results()
+    #cursor.close()
+
+    query = 'CALL `lucky_user`( "{}");'.format(args)
+    result = conn.execute(query)
+
+    conn.close()
+    return result
+

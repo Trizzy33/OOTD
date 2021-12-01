@@ -20,6 +20,13 @@ def blog():
     return render_template('blog.html', loggedIn=False, item_data=item_data)
 
 
+@main.route('/lucky')
+def lucky():
+    item_data = lucky_person()
+    return item_data
+
+
+
 @main.route("/category", methods=["POST"])
 def category():
     category_form = request.form
