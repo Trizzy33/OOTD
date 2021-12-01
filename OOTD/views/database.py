@@ -222,11 +222,12 @@ def get_userOufit_info(email):
 def search_product_name(product_name, search_category):
     conn = db.connect()
     if search_category == "Women" or search_category == "Men":
-        query = 'SELECT distinct name, url, id FROM product NATURAL JOIN style WHERE gender' \
-                ' LIKE "%%{}%%" AND name like "%%{}%%" LIMIT 100;'.format(search_category, product_name)
+        query = 'SELECT distinct name, url, id FROM product natural join product_style NATURAL JOIN style WHERE gender' \
+                ' LIKE "%%{}%%" AND name like "%%{}%%" AND name like "%%{}%%" LIMIT 100;'.format(search_category, product_name, search_category)
     else:
         query = 'SELECT distinct name, url, id FROM product WHERE name like "%%{}%%" LIMIT 100;'.format(product_name)
     item_data = conn.execute(query)
+ 
     conn.close()
     return item_data
 

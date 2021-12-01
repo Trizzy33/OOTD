@@ -115,7 +115,10 @@ def search_product():
     item_data = search_product_name(product_name, search_category)
     # for data in item_data:
     #     print(data[1])
-    return render_template('display.html',item_data=item_data, exist_item=True)
+    if 'email' in session:
+        return render_template('display.html',item_data=item_data, exist_item=True, loggedIn=True)
+    else:
+        return render_template('display.html',item_data=item_data, exist_item=True, loggedIn=False)
     # except:
     #     return render_template('index1.html')
 
