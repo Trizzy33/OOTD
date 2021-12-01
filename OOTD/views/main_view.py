@@ -10,13 +10,17 @@ main = Blueprint("main", __name__)
 
 @main.route('/')
 def home():
-    item_data = get_rank_products(gcached_table)
-    return render_template('index.html', loggedIn=False, item_data=item_data)
+    if 'email' not in session:
+        item_data = get_rank_products(gcached_table)
+        return render_template('index.html', loggedIn=False, item_data=item_data)
+    return redirect(url_for('auth.home'))
 
 
 @main.route('/blog')
 def blog():
     item_data = get_rand_blog()
+    if 'email' in session:
+        return render_template('blog.html', loggedIn=True,user_name=session["user_name"], item_data=item_data)
     return render_template('blog.html', loggedIn=False, item_data=item_data)
 
 
@@ -124,9 +128,9 @@ def search_product():
     # for data in item_data:
     #     print(data[1])
     if 'email' in session:
-        return render_template('display.html',item_data=item_data, exist_item=True, loggedIn=True)
+        return render_template('display.html',item_data=item_data, exist_item=True, user_name=session["user_name"], loggedIn=True)
     else:
-        return render_template('display.html',item_data=item_data, exist_item=True, loggedIn=False)
+        return render_template('display.html',item_data=item_data, exist_item=True, user_name=session["user_name"], loggedIn=False)
     # except:
     #     return render_template('index1.html')
 
@@ -138,7 +142,10 @@ def display_category(id):
     elif id == 2:
         search = "gender = 'Women'"
     item_data = search_product_cate(search)
-    return render_template('display.html', item_data=item_data, exist_item=True)
+    if 'email' in session:
+        return render_template('display.html', item_data=item_data, exist_item=True, user_name=session["user_name"], loggedIn=True)
+    else:
+        return render_template('display.html', item_data=item_data, exist_item=True, user_name=session["user_name"], loggedIn=False)
 
 
 @main.route('/autocomplete', methods=['GET'])
@@ -147,8 +154,6 @@ def autocomplete():
     results = auto_complete(search)
     results = [mv[0] for mv in results.all()]
     return jsonify(matching_results=results)
-
-
 
 @main.route('/single/<int:product_id>')
 def show_info(product_id):
