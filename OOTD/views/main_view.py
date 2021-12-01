@@ -1,3 +1,4 @@
+
 from flask import Blueprint, redirect, request, session, render_template, url_for, flash
 from flask import jsonify
 # from flask_login import  current_user, login_user, login_required, logout_user
@@ -197,9 +198,6 @@ def outfit_page():
         profile_data = get_user_info(email)
         user_id = find_userid(email).first()[0]
         item_data = get_user_outfits(user_id)
-        for i in item_data:
-            print(i)
-        item_data = get_user_outfits(user_id)
     return render_template("outfit_page.html", item_data = item_data, loggedIn=True, user_name=session["user_name"], profile_data = profile_data)
 
 @main.route('/deleteOutfit', methods = ['POST'])
@@ -211,3 +209,12 @@ def deleteOutfit(product_id=0):
     print("productid:", product_id)
     delete_outfit(user_id,product_id)
     return 'Deleted'
+
+@main.route("/ranking")
+def ranking():
+    if 'email' not in session:
+        flash("Please log in first")
+        return redirect(url_for('auth.login_form'))
+    else:
+        result = adv1()
+    return render_template("ranking.html", item_data = result, loggedIn=True, user_name=session["user_name"])
