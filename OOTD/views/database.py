@@ -3,7 +3,6 @@ from time import time
 from flask import session
 from OOTD.settings import db, gcached_table, app
 import random
-import MySQLdb
 
 # search product, return id
 def find_product(product_name: str):
