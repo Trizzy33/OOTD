@@ -138,6 +138,7 @@ def edit_profile():
     try:
         update_user(email, name, gender, dob)
         flash("Profile Updated!")
+        session["user_name"] = name
         return redirect(url_for('auth.home'))
     except Exception as err:
         print(err)
