@@ -28,7 +28,7 @@
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `lucky_user`()
+CREATE PROCEDURE `lucky_user`()
 BEGIN
 	declare userIdBlog int;
     declare userIdOutfit int;
@@ -112,7 +112,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `top_user`()
+CREATE PROCEDURE `top_user`()
 BEGIN
 DECLARE done INT default 0;
     DECLARE ID INT;
