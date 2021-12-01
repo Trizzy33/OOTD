@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: project
+-- Host: localhost    Database: project
 -- ------------------------------------------------------
 -- Server version	8.0.27
 
@@ -28,7 +28,7 @@
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `lucky_user`(in someletter varchar(1))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `lucky_user`()
 BEGIN
 	declare userIdBlog int;
     declare userIdOutfit int;
@@ -93,7 +93,7 @@ BEGIN
     
     select user_id, name 
     from blog_user join user on user_id = userId
-    where name like concat('%', someletter, '%') and user_id in (select userId from outfit_user)
+    where user_id in (select userId from outfit_user)
     order by rand()
     limit 5;
 END ;;
@@ -158,4 +158,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-01 15:33:47
+-- Dump completed on 2021-12-01 15:46:07
