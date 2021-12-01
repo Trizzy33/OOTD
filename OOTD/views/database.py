@@ -401,12 +401,8 @@ def delete_outfit(user_id, outfit_id):
 def lucky_person():
     conn = db.connect()
     args = "a"
-    query = 'CALL `lucky_user`();'.format(args)
-
-    #query = 'CALL `top_user`();'
+    query = 'CALL `lucky_user`();'
     result = conn.execute(query)
-    for item in result:
-        print(item)
     conn.close()
     return result
 

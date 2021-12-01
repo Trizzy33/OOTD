@@ -23,7 +23,7 @@ def blog():
 @main.route('/lucky')
 def lucky():
     item_data = lucky_person()
-    return item_data
+    return render_template('lucky.html', loggedIn=False, item_data=item_data)
 
 
 
